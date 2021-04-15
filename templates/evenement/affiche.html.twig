@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" style="margin-left:auto; margin-right: auto; background-image: url('https://i.ibb.co/6HfnTgB/back1.jpg'); background-repeat: no-repeat; background-size: 1100px 1000px ">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<div>
+<body >
+<div style="margin-left:auto; margin-right: auto;margin-top: 200px ">
+    <div style="margin-left:350px">
+
+        <h1>Liste des evenements</h1>
+
+    </div>
+
+    <table border="2px"  style="margin-left:auto; margin-right: auto">
+
+        <tr>
+
+            <th>id</th>
+            <th>nom</th>
+            <th>date_evenement</th>
+            <th>responsable</th>
+            <th>description</th>
+            <th>etat</th>
+            <th>nbr places</th>
+            <th>Action</th>
+            <th>Action</th>
+
+
+
+
+        </tr>
+        <tr {%for e in evenement%}>
+
+            <td>{{e.id_evenement}} </td>
+            <td>{{e.nom_evenement}} </td>
+            <td>{{e.date_evenement|date('Y-m-d')}} </td>
+            <td>{{e.responsable}} </td>
+            <td>{{e.description}} </td>
+            <td>{{e.etat}} </td>
+            <td>{{e.nbr_place}} </td>
+
+
+            <td><a href="{{ path('update',{'id_evenement':e.id_evenement}) }}">Update</a></td>
+
+            <td><a href="{{ path('d',{'id_evenement':e.id_evenement}) }}">Delete</a></td>
+
+
+
+
+
+        </tr {%endfor%}}>
+
+
+
+    </table>
+
+
+</div>
+
+</div>
+</body>
+</html>

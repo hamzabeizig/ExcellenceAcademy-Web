@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" style="margin-left:auto; margin-right: auto; background-image: url('https://i.ibb.co/6HfnTgB/back1.jpg'); background-repeat: no-repeat; background-size: 1100px 1000px ">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<div>
+    <body >
+    <div style="margin-left:auto; margin-right: auto;margin-top: 200px ">
+        <div style="margin-left:350px">
+
+            <h1>Liste des Categories</h1>
+
+        </div>
+
+        <table border="2px"  style="margin-left:300px; margin-right: auto">
+
+            <tr>
+
+                <th>id</th>
+                <th>nom</th>
+
+
+
+
+            </tr>
+            <tr {%for ca in categorie%}>
+
+                <td>{{ca.id}} </td>
+                <td>{{ca.Name}} </td>
+
+                <td><a href="{{ path('updateC',{'id':ca.id}) }}">Update</a></td>
+
+                <td><a href="{{ path('dc',{'id':ca.id}) }}">Delete</a></td>
+
+
+
+
+
+
+            </tr {%endfor%}}>
+
+
+
+        </table>
+
+
+    </div>
+
+</div>
+</body>
+</html>
