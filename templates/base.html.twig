@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstr
+apcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-
+Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
+jh" crossorigin="anonymous">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body style="
+background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.gettyimages.fr%2Fcollections%2F500px&psig=AOvVaw1XCvITMFqMyqnenOj2pStC&ust=1618556182794000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCJiZ2fnU_-8CFQAAAAAdAAAAABAD');
+padding-top: 90px;
+background-size: cover;
+background-attachment: fixed;
+">
+
+<div class="container">
+    {% block body %}{% endblock %}
+</div>
+<script src="https://code.jquery.com/jquery3.4.1.slim.min.js" integrity="sha384-
+J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ
++n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.
+16.0/dist/umd/popper.min.js" integrity="sha384-
+Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfoo
+Ao" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootst
+rap/4.4.1/js/bootstrap.min.js" integrity="sha384-
+wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifw
+B6" crossorigin="anonymous"></script>
+{% block javascripts %}{% endblock %}
+</body>
+</html>

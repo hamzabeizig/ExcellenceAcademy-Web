@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% block title%} Liste des Departements{% endblock %}
+{% block body %}
+
+{% if departements %}
+<table id="departements" class="table table-striped">
+    <thead>
+    <tr>
+        <th>Nom</th>
+        <th>Chef_Dep</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for departement in departements %}
+        <tr>
+            <td>{{ departement.nom }}</td>
+            <td>{{ departement.chefdep }}</td>
+            <td>
+                <a href="/departement/edit/{{ departement.id }}" class="btn btn-dark">Modifier</a>
+                <a href="/departement/delete/{{ departement.id }}" class="btn btn-danger"
+                   onclick="return confirm('Etesvous sûr de supprimer ce departement?');">Supprimer</a>
+
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p>Aucun departement</p>
+{% endif %}
+    <div>
+        <a href="{{ path('new_departement') }}"  class="btn btn-success">Ajouter Departement</a>
+        <a href="{{ path('reunion_list') }}"  class="btn btn-success">Les Reunions</a></div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block title%} Liste des Reunions{% endblock %}
+{% block body %}
+
+    {% if reunions %}
+        <table id="reunions" class="table table-striped">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>objectif</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for reunion in reunions %}
+                <tr>
+                    <td>{{ reunion.nom }}</td>
+                    <td>{{ reunion.objectif }}</td>
+                    <td>
+                        <a href="/reunion/{{ reunion.id }}" class="btn btn-dark">Détails</a>
+                        <a href="/reunion/edit/{{ reunion.id }}" class="btn btn-dark">Modifier</a>
+                        <a href="/reunion/delete/{{ reunion.id }}" class="btn btn-danger"
+                           onclick="return confirm('Etes vous sûr de supprimer cette reunion?');">Supprimer</a>
+
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucune reunion</p>
+    {% endif %}
+    <div>
+        <a href="{{ path('new_reunion') }}"  class="btn btn-success">Ajouter Reunion</a>
+        <a href="{{ path('departement_list') }}"  class="btn btn-success">Les Departements</a>
+    </div>
+
+{% endblock %}

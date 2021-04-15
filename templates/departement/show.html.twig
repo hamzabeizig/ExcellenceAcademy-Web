@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+{{ reunion.nom }}
+{% endblock %}
+{% block body %}
+
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th> Nom : {{ reunion.nom }}</th>
+
+        </tr>
+
+        </thead>
+        <tbody>
+        <tr>
+            <td> Matiere : {{ reunion.matiere }}</td>
+        </tr>
+        <tr>
+            <td>Horaire : {{ reunion.horaire }}</td>
+        </tr>
+        <tr>
+            <td> Departement : {{ reunion.departement.nom }}</td>
+
+        </tr>
+        </tbody>
+    </table>
+<a href="/reunion" class="btn btn-success">Retour</a>
+{% endblock %}
