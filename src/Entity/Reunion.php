@@ -3,7 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\ReunionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @ORM\Entity(repositoryClass=ReunionRepository::class)
@@ -19,6 +23,12 @@ class Reunion
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  @Assert\Length(
+     * min = 5,
+     * max = 30,
+     * minMessage = "Le nom d'une reunion doit comporter au moins {{ limit }} caractères",
+     * maxMessage = "Le nom d'une reunion doit comporter au plus {{ limit }} caractères"
+     * )
      */
     private $nom;
 
@@ -28,10 +38,27 @@ class Reunion
     private $date;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $start;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $end;
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Departement", inversedBy="reunions")
      * @ORM\JoinColumn(nullable=false)
      */
     private $departement;
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Enseignant", inversedBy="reunions")
+     */
+    private $enseignants;
+    public function __construct()
+    {
+        $this->enseignants = new ArrayCollection();
+    }
 
 
 
@@ -39,6 +66,7 @@ class Reunion
      * @ORM\Column(type="string", length=255)
      */
     private $matiere;
+
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -49,6 +77,18 @@ class Reunion
      * @ORM\Column(type="string", length=255)
      */
     private $horaire;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\Range(
+    min = 30,
+    max = 90,
+    notInRangeMessage = "la durée de la reunion doit etre entre  {{ min }}mn et {{ max }}mn "
+    )
+     */
+    private $duree;
+
+
 
     public function getId(): ?int
     {
@@ -126,4 +166,63 @@ class Reunion
 
         return $this;
     }
+    public function getDuree(): ?string
+    {
+        return $this->duree;
+    }
+
+    public function setDuree(string $duree): self
+    {
+        $this->duree = $duree;
+
+        return $this;
+    }
+    /**
+     * @return  Collection|Enseignant[]
+     */
+    public function getEnseignants()
+    {
+        return $this->enseignants;
+    }
+    public function addEnseignant(Enseignant $enseignant): self
+    {
+        if (!$this->enseignants->contains($enseignant)) {
+            $this->enseignants[] = $enseignant;
+        }
+        return $this;
+    }
+    public function removeEnseignant(Enseignant $enseignant): self
+    {
+        if ($this->enseignants->contains($enseignant)) {
+            $this->enseignants->removeElement($enseignant);
+        }
+        return $this;
+    }
+    public function getStart(): ?\DateTimeInterface
+    {
+        return $this->start;
+    }
+
+    public function setStart(\DateTimeInterface $start): self
+    {
+        $this->start = $start;
+
+        return $this;
+    }
+
+    public function getEnd(): ?\DateTimeInterface
+    {
+        return $this->end;
+    }
+
+    public function setEnd(\DateTimeInterface $end): self
+    {
+        $this->end = $end;
+
+        return $this;
+    }
+
+
+
+
 }

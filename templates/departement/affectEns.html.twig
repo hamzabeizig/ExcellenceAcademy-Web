@@ -1,0 +1,32 @@
+{% extends 'base1.html.twig' %}
+{% block title %}
+
+ {% endblock %}
+{% block body %}
+
+<div style="padding-left: 400px ;color: darkred"> Liste Des Enseignants</div>
+    <table style="margin: auto ;padding-top: 100px" class="table table-striped">
+
+        {% if enseignants %}
+        <tbody>
+
+        {% for ens in enseignants %}
+            <tr>
+                <td>
+                    {{ ens.username }}
+                </td>
+                 <td> <a href="/affectEns/{{ ens.id }}/{{ idR }}" class="btn" style="background-color: darkgray;border-color: darkred"
+                        onclick="return confirm('Etes vous sûr daffecter cet Enseignant ?');">Affecter</a></td>
+
+
+            </tr>
+        {% endfor %}
+
+        </tbody>
+        {% else %}
+            <p>Aucun enseignant à affecter</p>
+        {% endif %}
+    </table>
+
+
+{% endblock %}

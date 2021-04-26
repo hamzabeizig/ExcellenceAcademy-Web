@@ -48,9 +48,18 @@ class Departement
     public function __construct()
     {
         $this->reunions = new ArrayCollection();
+        $this->enseignants = new ArrayCollection();
     }
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Enseignant", mappedBy="departement")
+     */
+    private $enseignants;
 
+    public function __construct2()
+    {
+        $this->enseignants = new ArrayCollection();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -101,6 +110,32 @@ class Departement
             // set the owning side to null (unless already changed)
             if ($reunion->getDepartement() === $this) {
                 $reunion->setDepartement(null);
+            }
+        }
+        return $this;
+    }
+    /**
+     * @return Collection|Enseignant[]
+     */
+    public function getenseignants(): Collection
+    {
+        return $this->enseignants;
+    }
+    public function addEnseignant(Enseignant $enseignant): self
+    {
+        if (!$this->enseignants->contains($enseignant)) {
+            $this->enseignants[] = $enseignant;
+            $enseignant->setDepartement($this);
+        }
+        return $this;
+    }
+    public function removeEnseignant(Enseignant $enseignant): self
+    {
+        if ($this->enseignants->contains($enseignant)) {
+            $this->enseignants->removeElement($enseignant);
+            // set the owning side to null (unless already changed)
+            if ($enseignant->getDepartement() === $this) {
+                $enseignant->setDepartement(null);
             }
         }
         return $this;
