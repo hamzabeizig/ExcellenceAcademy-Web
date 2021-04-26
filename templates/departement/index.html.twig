@@ -1,7 +1,25 @@
-{% extends 'base.html.twig' %}
+{% extends 'base1.html.twig' %}
 {% block title%} Liste des Departements{% endblock %}
 {% block body %}
 
+<h1 style="margin-top: 50px ; margin-bottom: 50px;
+padding-left: 370px ; color: darkred"> Liste des Departements </h1>
+
+{{ form_start(form) }}
+<div class="form-row align-items-end" >
+    <div class="col">
+        {{ form_row(form.nom) }}
+    </div>
+    <div class="col">
+        <div class="form-group">
+            <button type="submit" style="background-color: darkgray;border-color: darkred" class="btn btn-success">Rechercher</button>
+            <a href="{{ path('new_departement') }}" style="background-color: darkgray;border-color: darkred" class="btn btn-success">Ajouter Departement</a>
+        </div>
+
+    </div>
+
+</div>
+{{ form_end(form) }}
 {% if departements %}
 <table id="departements" class="table table-striped">
     <thead>
@@ -17,6 +35,7 @@
             <td>{{ departement.nom }}</td>
             <td>{{ departement.chefdep }}</td>
             <td>
+                <a href="/departement/{{ departement.id }}" class="btn" style="background-color: darkgray;border-color: darkred" >Liste des enseignants</a>
                 <a href="/departement/edit/{{ departement.id }}" class="btn btn-dark">Modifier</a>
                 <a href="/departement/delete/{{ departement.id }}" class="btn btn-danger"
                    onclick="return confirm('Etesvous sûr de supprimer ce departement?');">Supprimer</a>
@@ -29,9 +48,6 @@
 {% else %}
     <p>Aucun departement</p>
 {% endif %}
-    <div>
-        <a href="{{ path('new_departement') }}"  class="btn btn-success">Ajouter Departement</a>
-        <a href="{{ path('reunion_list') }}"  class="btn btn-success">Les Reunions</a></div>
-    </div>
+
 
 {% endblock %}

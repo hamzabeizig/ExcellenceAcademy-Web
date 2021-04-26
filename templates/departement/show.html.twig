@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base1.html.twig' %}
 {% block title %}
 {{ reunion.nom }}
 {% endblock %}
@@ -8,23 +8,60 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th> Nom : {{ reunion.nom }}</th>
+            <th style="color: darkred">  Reunion  {{ reunion.nom }}</th>
+            <th style="color: darkred"> Donnés </th>
 
         </tr>
 
         </thead>
         <tbody>
+
         <tr>
-            <td> Matiere : {{ reunion.matiere }}</td>
+            <td> Date </td>
+            <td> {{reunion.date.format('d/m/Y')}}</td>
         </tr>
         <tr>
-            <td>Horaire : {{ reunion.horaire }}</td>
-        </tr>
+            <td>Horaire </td>
+            <td> {{ reunion.horaire }}</td>
+
+        <tr/>
         <tr>
-            <td> Departement : {{ reunion.departement.nom }}</td>
+            <td>Departement </td>
+            <td> {{ reunion.departement.nom }}</td>
+
+        <tr/>
+        <tr>
+            <td>Durée</td>
+            <td> {{ reunion.duree }} mn</td>
+
+        <tr/>
+
+
+        </tbody>
+    </table >
+
+    <table style="margin: auto ;padding-top: 100px" class="table table-striped">
+        <thead>
+        <tr>
+
+            <th style="padding-left: 400px ;color: darkred"> Liste Des Enseignants </th>
 
         </tr>
+
+
+        </thead>
+        <tbody>
+        {% for ens in reunion.enseignants %}
+        <tr>
+            <td>
+                {{ ens.username }}
+            </td>
+            <td> <a href="/suppens/{{ ens.id }}/{{ reunion.id }}" class="btn" style="background-color: darkgray;border-color: darkred"
+                    onclick="return confirm('Etes vous sûr de supprimer cet Enseignant?');">Supprimer</a></td>
+        </tr>
+        {% endfor %}
         </tbody>
     </table>
-<a href="/reunion" class="btn btn-success">Retour</a>
+
+
 {% endblock %}
