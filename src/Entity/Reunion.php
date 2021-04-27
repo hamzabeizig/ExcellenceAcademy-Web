@@ -55,6 +55,10 @@ class Reunion
      * @ORM\ManyToMany(targetEntity="App\Entity\Enseignant", inversedBy="reunions")
      */
     private $enseignants;
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Enseignant1", inversedBy="reunions")
+     */
+    private $enseignants1;
     public function __construct()
     {
         $this->enseignants = new ArrayCollection();
@@ -195,6 +199,27 @@ class Reunion
     {
         if ($this->enseignants->contains($enseignant)) {
             $this->enseignants->removeElement($enseignant);
+        }
+        return $this;
+    }
+    /**
+     * @return  Collection|Enseignant1[]
+     */
+    public function getEnseignants1()
+    {
+        return $this->enseignants1;
+    }
+    public function addEnseignant1(Enseignant1 $enseignant1): self
+    {
+        if (!$this->enseignants1->contains($enseignant1)) {
+            $this->enseignants1[] = $enseignant1;
+        }
+        return $this;
+    }
+    public function removeEnseignant1(Enseignant1 $enseignant1): self
+    {
+        if ($this->enseignants1->contains($enseignant1)) {
+            $this->enseignants1->removeElement($enseignant1);
         }
         return $this;
     }

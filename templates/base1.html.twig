@@ -210,43 +210,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.0/main.min.js" integrity="sha256-DBxkGZLxKsLKhz054qUpBqtotG00r9AELGpSigJujLg=" crossorigin="anonymous"></script>
 <!-- End custom js for this page-->
-<script src="{{ asset('fullCalendar/main.js') }}"></script>
-<script>
-
-    document.addEventListener('DOMContentLoaded', function() {
-        let calendarEl = document.getElementById('calendar');
-        let calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'timeGridWeek',
-            locale: 'fr',
-            timeZone: 'Europe/Paris',
-            headerToolbar: {
-                start: 'prev,next today',
-                center: 'title',
-                end: 'dayGridMonth,timeGridWeek'
-            },
-            events: {{ data | raw}},
-            nowIndicator:true
-        })
-        calendar.on('eventChange', (e) => {
-            let url = `/api/${e.event.id}/edit`
-            let donnees = {
-                "title": e.event.title,
-                "description": e.event.extendedProps.description,
-                "start": e.event.start,
-                "end": e.event.end,
-                "backgroundColor": e.event.backgroundColor,
-                "borderColor": e.event.borderColor,
-                "textColor": e.event.textColor,
-                "allDay": e.event.allDay
-            }
-
-            let xhr = new XMLHttpRequest
-            xhr.open("PUT", url)
-            xhr.send(JSON.stringify(donnees))
-        })
-        calendar.render();
-    });
-</script>
+{% block javascripts %}
+ {% endblock %}
 </body>
 
 </html>

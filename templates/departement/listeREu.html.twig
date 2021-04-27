@@ -1,5 +1,8 @@
 {% extends 'frontOffice.html.twig' %}
+
+
 {% block body %}
+
 
     {% if reunions %}
     <table id="reunions" class="table table-striped">
@@ -31,6 +34,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script src="{{ asset('fullCalendar/main.js') }}"></script>
     <script>
 
         document.addEventListener('DOMContentLoaded', function() {

@@ -203,6 +203,7 @@
         checkSection();
     });
 </script>
+{% block javascripts %}
 <script src="{{ asset('fullCalendar/main.js') }}"></script>
 <script>
 
@@ -240,5 +241,6 @@
         calendar.render();
     });
 </script>
+{% endblock %}
 </body>
 </html>
