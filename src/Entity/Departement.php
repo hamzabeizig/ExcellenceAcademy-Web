@@ -49,12 +49,17 @@ class Departement
     {
         $this->reunions = new ArrayCollection();
         $this->enseignants = new ArrayCollection();
+        $this->enseignants1=new ArrayCollection();
     }
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Enseignant", mappedBy="departement")
      */
     private $enseignants;
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Enseignant1", mappedBy="departement")
+     */
+    private $enseignants1;
 
     public function __construct2()
     {
@@ -133,6 +138,31 @@ class Departement
     {
         if ($this->enseignants->contains($enseignant)) {
             $this->enseignants->removeElement($enseignant);
+            // set the owning side to null (unless already changed)
+            if ($enseignant->getDepartement() === $this) {
+                $enseignant->setDepartement(null);
+            }
+        }
+        return $this;
+    }/**
+     * @return Collection|Enseignant1[]
+     */
+    public function getenseignants1(): Collection
+    {
+        return $this->enseignants1;
+    }
+    public function addEnseignant1(Enseignant1 $enseignant): self
+    {
+        if (!$this->enseignants1->contains($enseignant)) {
+            $this->enseignants1[] = $enseignant;
+            $enseignant->setDepartement($this);
+        }
+        return $this;
+    }
+    public function removeEnseignant1(Enseignant1 $enseignant): self
+    {
+        if ($this->enseignants1->contains($enseignant)) {
+            $this->enseignants1->removeElement($enseignant);
             // set the owning side to null (unless already changed)
             if ($enseignant->getDepartement() === $this) {
                 $enseignant->setDepartement(null);
