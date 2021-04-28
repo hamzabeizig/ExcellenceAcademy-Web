@@ -29,7 +29,6 @@ class Auth extends AbstractController
     {
 
         $session = $request->getSession();
-
         $AuthClass = new AuthClass();
         $form = $this->createForm(AuthC::class, $AuthClass);
         $form->handleRequest($request);
@@ -38,11 +37,13 @@ class Auth extends AbstractController
             $mail = $AuthClass->getEmail();
             $md = $AuthClass->getMdp();
             $repo = $this->getDoctrine()->getRepository(User::class)->findBy(array('email' => $mail , 'Mdp' => $md));
-            $role = $repo[0];
-            $maV = $session->get('maV');
-            $idu = $role->getId();
-            $session->set('maV',$idu);
+
             if (count($repo) > 0) {
+
+                $role = $repo[0];
+                $maV = $session->get('maV');
+                $idu = $role->getId();
+                $session->set('maV',$idu);
 
                 if ($role->getRole() == 'Admin')
                     return $this->redirectToRoute('departement_list');
@@ -50,6 +51,8 @@ class Auth extends AbstractController
                     return $this->redirect('user/edit/'.$idu);
                 else if ($role->getRole() == 'Etudiant')
                     return $this->redirect('user/editet/'.$idu);
+                else
+                    echo '<script>alert("Votre compte est desactiveè pour le moment!")</script>';
             }
             else if(count($repo) == 0)
                 echo '<script>alert("Un erreur c\'est produits ! Verifier Vos Paramètres !")</script>';
@@ -57,4 +60,6 @@ class Auth extends AbstractController
         $session->clear();
         return $this->render('user/auth.html.twig', ['form' => $form->createView()]);
     }
+
+
 }
