@@ -1,0 +1,62 @@
+{% extends 'base1.html.twig' %}
+{% block title%} Liste des Utilisateurs{% endblock %}
+{% block body%}
+    {{ form_start(form) }}
+<div class="form-row align-items-end" style="margin-top: 250px" >
+    <div class="col">
+        {{ form_row(form.nom) }}
+    </div>
+    <div class="col">
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}
+
+    {% if User %}
+        <table id="User" class="table table-striped" >
+            <thead>
+            <tr>
+
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Login</th>
+                <th>E_mail</th>
+                <th>date de naissance</th>
+                <th>Role</th>
+                <th>Mot de passe</th>
+
+                <th>Actions</th>
+
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for User in User %}
+                <tr>
+
+                    <td>{{ User.nom }}</td>
+                    <td>{{ User.prenom }}</td>
+                    <td>{{ User.username }}</td>
+                    <td>{{ User.email }}</td>
+                    <td>{{ User.datedenaissance |date('d-m-Y') }}</td>
+                    <td>{{ User.Role }}</td>
+                    <td>{{ User.Mdp }}</td>
+
+                    <td>
+                        <a href="/user/bloque/{{ User.id }}" class="btn btn-danger" onclick="return confirm('bloquer/debloquer cet utilisateur ?');">Bloq/Debloq</a>
+                        <a href="/user/delete/{{ User.id }}" href="/user/mail/{{ User.id }}" class="btn btn-warning" onclick="return confirm('supprimer cet utilisateur ?');">Supprimer</a>
+                        <a href="/user/edit/{{ User.id }}" class="btn btn-success">Modifier</a>
+                    </td>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucun utilisateurs</p>
+    {% endif %}
+
+
+{% endblock %}

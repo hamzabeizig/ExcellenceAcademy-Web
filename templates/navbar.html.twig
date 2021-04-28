@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-3">
+    <div style="height: 65px" class="container">
+        <a href="/" class="navbar-brand">Excellence Academy</a>
+        <h3>{{ app.session.get('maV') }}</h3>
+        <button class="navbar-toggler" type="button" datatoggle="collapse" data-target="#mobile-nav">
+            <span class="navbar-toggle-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mobile-nav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="/" class="nav-link">Acceuil</a>
+                </li>
+                <li class="nav-item">
+                    <a  href="/affiche/{{ app.session.get('maV') }}" class="nav-link">Reunion</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/" class="nav-link">Notes</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/" class="nav-link">Assiduitè</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/" class="nav-link">Cours</a>
+                </li>
+                <li class="nav-item">
+                <a href="/" class="nav-link">Deconnexion</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -341,8 +341,7 @@ class DepartementController extends AbstractController
     public function affiche($id)
     {
 
-        $enseignant = $this->getDoctrine()->getRepository(Enseignant::class)
-            ->find($id);
+        $enseignant = $this->getDoctrine()->getRepository(Enseignant::class)->find($id);
         $reunions=$enseignant->getReunions();
         $rdvs=[];
         foreach ($reunions as $event)
