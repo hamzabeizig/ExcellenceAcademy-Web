@@ -3,11 +3,13 @@
 {% block body %}
     {{ form_start(form) }}
 
-        <div class="form-row align-items-end" style="margin-top: 250px" style="margin-right: 10px" >
+    <div class="form-row align-items-end" style="margin-top: 250px;margin-left: -30px"  >
         <div class="col" >
             {{ form_widget(form) }}
-            <button type="submit" class="btn btn-primary">Connecter</button>
-            <a href="auth.html.twig" >Mot de passe oublier ?</a>
+            <li> <button type="submit" class="btn btn-primary">Connecter</button>
+
+
+                <a href="/">Mot de passe oublier ?</a>
         </div>
         <div class="col">
             <div class="form-group">
