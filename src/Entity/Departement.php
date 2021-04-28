@@ -48,23 +48,17 @@ class Departement
     public function __construct()
     {
         $this->reunions = new ArrayCollection();
-        $this->enseignants = new ArrayCollection();
-        $this->enseignants1=new ArrayCollection();
+        $this->users = new  ArrayCollection();
     }
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Enseignant", mappedBy="departement")
-     */
-    private $enseignants;
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Enseignant1", mappedBy="departement")
-     */
-    private $enseignants1;
 
-    public function __construct2()
-    {
-        $this->enseignants = new ArrayCollection();
-    }
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="departement")
+     */
+    private $users;
+
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,52 +114,27 @@ class Departement
         return $this;
     }
     /**
-     * @return Collection|Enseignant[]
+     * @return Collection|User[]
      */
-    public function getenseignants(): Collection
+    public function getUsers(): Collection
     {
-        return $this->enseignants;
+        return $this->users;
     }
-    public function addEnseignant(Enseignant $enseignant): self
+    public function addUser(User $user): self
     {
-        if (!$this->enseignants->contains($enseignant)) {
-            $this->enseignants[] = $enseignant;
-            $enseignant->setDepartement($this);
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setDepartement($this);
         }
         return $this;
     }
-    public function removeEnseignant(Enseignant $enseignant): self
+    public function removeUser(User $user): self
     {
-        if ($this->enseignants->contains($enseignant)) {
-            $this->enseignants->removeElement($enseignant);
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
             // set the owning side to null (unless already changed)
-            if ($enseignant->getDepartement() === $this) {
-                $enseignant->setDepartement(null);
-            }
-        }
-        return $this;
-    }/**
-     * @return Collection|Enseignant1[]
-     */
-    public function getenseignants1(): Collection
-    {
-        return $this->enseignants1;
-    }
-    public function addEnseignant1(Enseignant1 $enseignant): self
-    {
-        if (!$this->enseignants1->contains($enseignant)) {
-            $this->enseignants1[] = $enseignant;
-            $enseignant->setDepartement($this);
-        }
-        return $this;
-    }
-    public function removeEnseignant1(Enseignant1 $enseignant): self
-    {
-        if ($this->enseignants1->contains($enseignant)) {
-            $this->enseignants1->removeElement($enseignant);
-            // set the owning side to null (unless already changed)
-            if ($enseignant->getDepartement() === $this) {
-                $enseignant->setDepartement(null);
+            if ($user->getDepartement() === $this) {
+                $user->setDepartement(null);
             }
         }
         return $this;
