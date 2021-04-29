@@ -1,0 +1,37 @@
+{% extends 'frontOffice.html.twig' %}
+
+{% block title %}Assiduite{% endblock %}
+
+{% block body %}
+    <h1>Assiduite</h1>
+
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>  {{ assiduite.id }}</td>
+        <tr>
+            <th>date</th>
+            <td>{{ assiduite.date|date("d/m/Y") }}</td>
+
+        </tr>
+        <tr>
+            <th>valeur</th>
+            <td>{{ assiduite.valeur }}</td>
+        </tr>
+        <tr>
+            <th>Matiere</th>
+            <td>  {{ assiduite.matiere.nomMatiere }}</td>
+        </tr>
+        <tr>
+            <th>UserName</th>
+            <td>  {{ assiduite.user.userName }}</td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <a  class="btn btn-primary" href="{{ path('assiduite_index') }}">Retour</a>
+
+
+{% endblock %}

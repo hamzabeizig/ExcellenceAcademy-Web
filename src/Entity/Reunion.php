@@ -52,17 +52,11 @@ class Reunion
      */
     private $departement;
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Enseignant", inversedBy="reunions")
-     */
-    private $enseignants;
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Enseignant1", inversedBy="reunions")
-     */
-    private $enseignants1;
-    public function __construct()
-    {
-        $this->enseignants = new ArrayCollection();
-    }
+ * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="reunions")
+ */
+    private $users;
+
+
 
 
 
@@ -181,45 +175,25 @@ class Reunion
 
         return $this;
     }
+
     /**
-     * @return  Collection|Enseignant[]
+     * @return  Collection|User[]
      */
-    public function getEnseignants()
+    public function getUsers()
     {
-        return $this->enseignants;
+        return $this->users;
     }
-    public function addEnseignant(Enseignant $enseignant): self
+    public function addUser(User $user): self
     {
-        if (!$this->enseignants->contains($enseignant)) {
-            $this->enseignants[] = $enseignant;
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
         }
         return $this;
     }
-    public function removeEnseignant(Enseignant $enseignant): self
+    public function removeUser(User $user): self
     {
-        if ($this->enseignants->contains($enseignant)) {
-            $this->enseignants->removeElement($enseignant);
-        }
-        return $this;
-    }
-    /**
-     * @return  Collection|Enseignant1[]
-     */
-    public function getEnseignants1()
-    {
-        return $this->enseignants1;
-    }
-    public function addEnseignant1(Enseignant1 $enseignant1): self
-    {
-        if (!$this->enseignants1->contains($enseignant1)) {
-            $this->enseignants1[] = $enseignant1;
-        }
-        return $this;
-    }
-    public function removeEnseignant1(Enseignant1 $enseignant1): self
-    {
-        if ($this->enseignants1->contains($enseignant1)) {
-            $this->enseignants1->removeElement($enseignant1);
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
         }
         return $this;
     }
@@ -245,6 +219,10 @@ class Reunion
         $this->end = $end;
 
         return $this;
+    }
+    public function __construct()
+    {
+
     }
 
 

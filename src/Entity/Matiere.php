@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\MatiereRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,16 +20,29 @@ class Matiere
      * @ORM\Column(type="integer")
      */
     private $id;
-
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     * @ORM\Column(name="nom_matiere", type="string", nullable=false, length=255)
+     * @Assert\NotBlank(message=" le champs coefficient est obligatoire!")
      */
     private $nom_matiere;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var int
+     *
+     * @ORM\Column(name="coefficient", type="integer", nullable=false)
+     * @Assert\NotBlank(message=" le champs coefficient est obligatoire!")
      */
     private $coefficient;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="volume_h", type="integer", nullable=false)
+     * @Assert\NotBlank(message=" le champs volume est obligatoire!")
+     */
+    private $volume_h;
+
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Cour", mappedBy="matiere")
      */
@@ -36,11 +51,10 @@ class Matiere
      * @ORM\OneToMany(targetEntity="App\Entity\Matiere", mappedBy="matiere")
      */
     private $notes;
-
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\OneToMany(targetEntity="App\Entity\Assiduite",mappedBy="matiere")
      */
-    private $volume_h;
+    private $assiduite;
 
     public function getId(): ?int
     {

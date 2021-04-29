@@ -88,6 +88,19 @@ class User
      * @ORM\OneToMany(targetEntity="App\Entity\Note", mappedBy="user")
      */
     private $notes;
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Reunion", mappedBy="users")
+     */
+    private $reunions;
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Departement", inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $departement;
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="Assiduite")
+     */
+    private $assiduite;
 
     public function getId(): ?int
     {
@@ -136,6 +149,7 @@ class User
         $this->cours=new ArrayCollection();
         $this->demconvs=new ArrayCollection();
         $this->notes=new ArrayCollection();
+        $this->reunions =new ArrayCollection();
     }
     public function getEmail(): ?string
     {
@@ -310,5 +324,37 @@ class User
             }
         }
     }
+    /**
+     * @return Collection|Reunion[]
+     */
+    public function getReunions(): Collection
+    {
+        return $this->reunions;
+    }
+    public function addReunion(Reunion $reunion): self
+    {
+        if (!$this->reunions->contains($reunion)) {
+            $this->reunions[] = $reunion;
+            $reunion->addUser($this);
+        }
+        return $this;
+    }
+    public function removeReunion(Reunion $reunion): self
+    {
+        if ($this->reunions->contains($reunion)) {
+            $this->reunions->removeElement($reunion);
+            $reunion->removeUser($this);
+        }
+        return $this;
+    }
 
+    public function getDepartement(): ?Departement
+    {
+        return $this->departement;
+    }
+    public function setDepartement(?Departement $departement): self
+    {
+        $this->departement = $departement;
+        return $this;
+    }
 }
