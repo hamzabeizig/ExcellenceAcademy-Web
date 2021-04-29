@@ -1,0 +1,28 @@
+{% extends 'basek.html.twig' %}
+{% block title%} Postuler pour un Stage{% endblock %}
+
+{% block body %}
+    <div style="margin-top: 200px; margin-left: 5px">
+        <div class="titre" style="margin-left: 350px;margin-top:100px ">
+            <h1>Postuler Pour un stage</h1>
+        </div>
+        <hr style="visibility: hidden ">
+        <div style="margin-left: 50px">
+            {{ form_start(form) }}
+            {{ form_row(form.Societe, { 'attr':{'disabled':'disabled'},'value' : stage.Societe.nom }) }}
+            {{ form_row(form.Email_Societe , { 'attr':{'disabled':'disabled'}, 'value' : stage.Email_Societe }) }}
+            {{  form_row(form.date_debut , { 'attr':{'disabled':'disabled'},'value' : stage.date_debut|date('Y-m-d') }) }}
+            {{ form_row(form.date_fin , { 'attr':{'disabled':'disabled'},'value' : stage.date_fin|date('Y-m-d')  }) }}
+            {{ form_row(form.pays, { 'attr':{'disabled':'disabled'},'value':stage.pays }) }}
+            {{ form_row(form.type_stage, { 'attr':{'disabled':'disabled'},'value' : stage.type_stage  }) }}
+            {{ form_row(form.CV) }}
+            {{ form_row(form.Lettre_de_motivation) }}
+            {{ form_end(form) }}
+
+        </div>
+
+
+    </div>
+
+
+{% endblock %}

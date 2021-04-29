@@ -1,0 +1,54 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Orders index{% endblock %}
+
+    {% block search %}
+        <input id="myInput" onkeyup="myFunction()" class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
+
+    {% endblock %}
+{% block body %}
+    <h1>Events</h1>
+   <div class="table-responsive table-responsive-data2">
+    <table id= "myTable" class="table table-data2">
+        <thead>
+        <tr>
+
+            <th>nom</th>
+            <th>date_evenement</th>
+            <th>responsable</th>
+            <th>description</th>
+            <th>nbr places</th>
+            <th>Categorie</th>
+            <th>Etat</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for evenement in evenements %}
+            <tr class="tr-shadow">
+
+                <td>{{evenement.nom_evenement}} </td>
+                <td>{{evenement.date_evenement|date('Y-m-d')}} </td>
+                <td>{{evenement.responsable}} </td>
+                <td>{{evenement.description}} </td>
+                <td>{{evenement.nbr_place}} </td>
+                <td>{{evenement.categorie.Name}} </td>
+                <td>
+                    <span class="block-email">{{ evenement.etat }} </span></td>
+                <td>
+                    <div class="table-data-feature">
+                        <button class="item" data-toggle="tooltip" data-placement="top" title="Accept"> <a href="{{ path('event_accepted', {'id': evenement.id_evenement }) }}"><i class="fa fa-thumbs-up"></i></a>                    </button>
+                        <button class="item" data-toggle="tooltip" data-placement="top" title="Decline"> <a href="{{ path('event_declined', {'id': evenement.id_evenement }) }}"><i class="fa fa-thumbs-down"></i></a>                    </button>
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'basek.html.twig' %}
+{% block title%} Mes Participations{% endblock %}
+
+{% block body %}
+
+<div style="margin-top: 200px; ">
+
+
+<div class="titre" style="margin-left: 399px;margin-top:100px ">
+<h1>Mes Participations</h1>
+</div>
+
+
+<hr style="visibility: hidden ">
+<div style="margin-left: 200px; margin-right: 200px;text-align: center">
+          <table border="2px"  style="margin-left:25px; margin-right: 250px" class="table table-striped">
+
+        <tr>
+
+            {% if participation %}
+
+            <th>Nom_Evenement</th>
+
+
+
+
+        </tr>
+        <tr {%for p in participation%}>
+
+            <td>{{p.getNomEvenement()}} </td>
+
+
+
+
+
+
+        </tr {%endfor%}}>
+
+
+
+    </table>
+
+</div>
+    </div>
+{% else %}
+    <p>Aucune Participation</p>
+  {% endif %}
+
+{% endblock %}
+

@@ -1,0 +1,54 @@
+{% extends 'basek.html.twig' %}
+{% block title%} Liste des Stages{% endblock %}
+
+{% block body %}
+<div style="margin-top: 200px; margin-left: 5px">
+
+<div class="titre" style="margin-left: 350px;margin-top:100px ">
+<h1>Liste des Stages</h1>
+</div>
+<hr style="visibility: hidden ">
+          <table border="2px"  style="margin-left:auto; margin-right: auto;text-align: center" class="table table-striped">
+
+            <tr>
+                {% if stage %}
+                <th>societe</th>
+                <th>Email_Société</th>
+                <th>Pays</th>
+                <th>date_debut</th>
+                <th>date_fin</th>
+                <th>type_stage</th>
+                <th>Action</th>
+
+
+
+
+            </tr>
+            <tr {%for s in stage%}>
+
+                <td>{{s.societe.Nom}} </td>
+                <td> {{s.Email_Societe}}</td>
+                <td>{{s.pays}}</td>
+                <td>{{s.date_debut|date('Y-m-d')}} </td>
+                <td>{{s.date_fin|date('Y-m-d')}} </td>
+                <td>{{s.type_stage}} </td>
+                <td><a href="{{ path('pos',{'id_stage':s.id}) }}"> <button class="btn btn-dark">Postuler</button></a>
+                <a href="{{ path('demanderC',{'id':s.id ,'id_et': app.session.get('maV') }) }}"><button class="btn btn-dark"  >Demander Convention</button></a> </td>
+
+
+
+
+
+
+            </tr {%endfor%}}>
+
+
+
+        </table>
+
+    </div>
+{% else %}
+    <p style="font-size: 40px; color: crimson; margin-left: 350px; font-family: bold 'Harlow Solid Italic'" >Aucun Stage à afficher !</p>
+  {% endif %}
+
+{% endblock %}

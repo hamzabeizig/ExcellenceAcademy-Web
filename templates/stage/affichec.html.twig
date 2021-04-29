@@ -1,0 +1,67 @@
+{% extends 'base1.html.twig' %}
+{% block title%} Demandes Des Conventions{% endblock %}
+
+{% block body %}
+
+<div style="margin-top: 200px; ">
+
+
+<div class="titre" style="margin-left: 320px;margin-top:100px ">
+<h1>Demandes Des Conventions</h1>
+</div>
+
+
+<hr style="visibility: hidden ">
+<div style="margin-left: 75px; margin-right: 200px;text-align: center">
+          <table border="2px"  style="margin-left:25px; margin-right: 300px" class="table table-striped">
+
+        <tr>
+
+            {% if conv %}
+
+            <th>Id Convention</th>
+            <th>Id_stage</th>
+            <th>Id_user</th>
+            <th>user_name</th>
+            <th>Email</th>
+
+
+            <th>Date</th>
+            <th>Action</th>
+            <th>Action</th>
+
+
+
+
+
+        </tr>
+        <tr {%for co in conv%}>
+
+            <td>{{co.getId()}} </td>
+            <td>{{co.getIdStage()}} </td>
+            <td>{{co.getIdUser()}} </td>
+            <td>{{co.getUserName()}} </td>
+            <td>{{co.getEmail()}} </td>
+            <td>{{co.getDate()|date('Y-m-d H:i:s')}} </td>
+
+
+                 <td><a href="{{ path('acc',{'id_conv':co.getId()}) }}" class="btn btn-success">Accepter </a></td>
+
+
+ <td>  <a href="{{ path('ref',{'id_conv':co.getId()}) }}"class="btn btn-danger" onclick="return confirm('Etes vous sûr de refuser cette demande?');">Refuser</a></td>
+
+
+
+        </tr {%endfor%}}>
+
+
+
+    </table>
+
+</div>
+    </div>
+{% else %}
+    <p>Aucune Demande </p>
+  {% endif %}
+
+{% endblock %}

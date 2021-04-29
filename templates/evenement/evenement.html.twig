@@ -1,0 +1,27 @@
+
+
+
+{% extends 'basek.html.twig' %}
+{% block title%} Liste des Evènements{% endblock %}
+
+{% block body %}
+
+
+ {%for e in evenement%}>
+     <div class="col-md-4">
+         <div class="thumbnail">
+
+             <div class="caption">
+                 <h4 class="text-center">{{e.nom_evenement}}</h4>
+                 <p> {{e.description}}</p>
+                 <p><span class="glyphicon glyphicon-map-marker"></span> {{e.date_evenement|date('Y-m-d')}} </p>
+
+
+
+
+             </div>
+         </div>
+     </div>
+ {% endfor %}
+
+{% endblock %}
