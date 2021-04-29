@@ -39,7 +39,11 @@ class AssiduiteController extends AbstractController
             $entityManager->persist($assiduite);
             $entityManager->flush();
 
+            if ($assiduite && $assiduite->getValeur()=="A"){
 
+                $this->dispatchMessage(new GenerateReport($assiduite->getId(), '+21650683952'));
+
+            }
             return $this->redirectToRoute('assiduite_index');
         }
 
