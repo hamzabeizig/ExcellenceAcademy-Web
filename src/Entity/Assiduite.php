@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\AssiduiteRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=AssiduiteRepository::class)
@@ -70,6 +71,7 @@ class Assiduite
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      */
     private $valeur;
 
@@ -98,8 +100,10 @@ class Assiduite
 
     public function setValeur(string $valeur): self
     {
-        $this->valeur = $valeur;
-
-        return $this;
+        if (($valeur=='A')||($valeur=='P'))
+        { $this->valeur = $valeur;}
+        else
+            $this->valeur = 'A' ;
+return $this;
     }
 }

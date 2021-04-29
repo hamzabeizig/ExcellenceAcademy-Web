@@ -7,6 +7,7 @@ use App\Entity\Enseignant;
 use App\Entity\EnseignantAdd;
 use App\Entity\Reunion;
 use App\Entity\PropertySearch;
+use App\Entity\User;
 use App\Form\DepartementSearchType;
 use App\Form\PropertySearchType;
 use App\Form\EnseignantAddType;
@@ -103,7 +104,7 @@ class DepartementController extends AbstractController
             ];
         }
         $data= json_encode($rdvs);
-         return $this->render('departement/reunion.html.twig', ['form' => $form->createView(), 'reunions' => $reunions,'data'=>$data]);
+        return $this->render('departement/reunion.html.twig', ['form' => $form->createView(), 'reunions' => $reunions,'data'=>$data]);
     }
 
     /**
@@ -243,8 +244,8 @@ class DepartementController extends AbstractController
             ->getRepository(Reunion::class)
             ->find($id);
 
-        $enseignants = $reunion->getEnseignants();
-        return $this->render('departement/show.html.twig', ['enseignants' => $enseignants, 'reunion' => $reunion]);
+        $users = $reunion->getUsers();
+        return $this->render('departement/show.html.twig', ['enseignants' => $users, 'reunion' => $reunion]);
 
 
     }
@@ -270,15 +271,15 @@ class DepartementController extends AbstractController
             ->getRepository(Reunion::class)
             ->find($id);
 
-        $enseignants = $reunion->getDepartement()->getenseignants();
-        $enseignantss = [];
-        foreach ($enseignants as $enseignant) {
-            if (!($reunion->getEnseignants()->contains($enseignant))) {
-                $enseignantss[] = $enseignant;
+        $users = $reunion->getDepartement()->getUsers();
+        $userss = [];
+        foreach ($users as $user) {
+            if (!($reunion->getUsers()->contains($user))) {
+                $userss[] = $user;
             }
         }
         //echo( $enseignants);
-        return $this->render('departement/affectEns.html.twig', ['enseignants' => $enseignantss, 'idR' => $id]);
+        return $this->render('departement/affectEns.html.twig', ['enseignants' => $userss, 'idR' => $id]);
     }
 
     /**
@@ -286,29 +287,29 @@ class DepartementController extends AbstractController
      */
     public function affectEns($id, $idR,\Swift_Mailer $mailer)
     {
-        $enseignant = $this->getDoctrine()
-            ->getRepository(Enseignant::class)
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)
             ->find($id);
 
         $reunion = $this->getDoctrine()
             ->getRepository(Reunion::class)
             ->find($idR);
-        $enseignants = $reunion->getDepartement()->getenseignants();
-        $dest=$enseignant->getEmail();
+        $users = $reunion->getDepartement()->getUsers();
+        $dest=$user->getEmail();
 
-        $reunion->addEnseignant($enseignant);
+        $reunion->addUser($user);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->flush();
-        $enseignantss = [];
-        foreach ($enseignants as $enseignant) {
-            if (!($reunion->getEnseignants()->contains($enseignant))) {
-                $enseignantss[] = $enseignant;
+        $userss = [];
+        foreach ($users as $user) {
+            if (!($reunion->getUsers()->contains($user))) {
+                $userss[] = $user;
                 $message = (new \Swift_Message(' Reunion '))
 
                     ->setFrom('excellenceacademy878@gmail.com')
-                    ->setTo('dhia.mathlouthi@esprit.tn')
+                    ->setTo($dest)
 
-                    ->setBody('Salut :' .$enseignant->getPrenom() .'Vous avez une reunion bientot . 
+                    ->setBody('Salut :' .$user->getPrenom() .'Vous avez une reunion bientot . 
                     Veuillez vous visionner votre liste des reunions ou vous trouverez les details ');
 
                 $mailer->send($message);
@@ -319,21 +320,21 @@ class DepartementController extends AbstractController
             }
         }
 
-        return $this->render('departement/affectEns.html.twig', ['enseignants' => $enseignantss, 'idR' => $id]);
+        return $this->render('departement/affectEns.html.twig', ['enseignants' => $userss, 'idR' => $id]);
 
     }
     /**
      * @Route("/suppens/{id}/{idR}" , name="suppens")
      */
     public function suppens($id, $idR) {
-        $enseignant =$this->getDoctrine()->getRepository(Enseignant::class)
+        $user =$this->getDoctrine()->getRepository(User::class)
             ->find($id);
         $reunion = $this->getDoctrine()->getRepository(Reunion::class)
             ->find($idR);
-        $reunion->removeEnseignant($enseignant);
+        $reunion->removeUser($user);
         $em=$this->getDoctrine()->getManager();
         $em->flush();
-        return $this->render('departement/show.html.twig', ['reunion' => $reunion ,'enseignant' => $enseignant, 'idR' => $id]);
+        return $this->render('departement/show.html.twig', ['reunion' => $reunion ,'enseignant' => $user, 'idR' => $id]);
     }
     /**
      * @Route("/affiche/{id}" , name="affichereu")
@@ -341,8 +342,8 @@ class DepartementController extends AbstractController
     public function affiche($id)
     {
 
-        $enseignant = $this->getDoctrine()->getRepository(Enseignant::class)->find($id);
-        $reunions=$enseignant->getReunions();
+        $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+        $reunions=$user->getReunions();
         $rdvs=[];
         foreach ($reunions as $event)
         {

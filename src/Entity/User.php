@@ -82,7 +82,15 @@ class User
      * @ORM\OneToMany(targetEntity="App\Entity\Evenement", mappedBy="user")
      */
     private $events;
-
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Reunion", mappedBy="users")
+     */
+    private $reunions;
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Departement", inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $departement;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Note", mappedBy="user")
@@ -309,6 +317,45 @@ class User
                 $note->setUser(null);
             }
         }
+    }
+
+    /**
+     * @return Collection|Reunion[]
+     */
+    public function getReunions(): Collection
+    {
+        return $this->reunions;
+    }
+    public function addReunion(Reunion $reunion): self
+    {
+        if (!$this->reunions->contains($reunion)) {
+            $this->reunions[] = $reunion;
+            $reunion->addUser($this);
+        }
+        return $this;
+    }
+    public function removeReunion(Reunion $reunion): self
+    {
+        if ($this->reunions->contains($reunion)) {
+            $this->reunions->removeElement($reunion);
+            $reunion->removeUser($this);
+        }
+        return $this;
+    }
+
+    public function getDepartement(): ?Departement
+    {
+        return $this->departement;
+    }
+    public function setDepartement(?Departement $departement): self
+    {
+        $this->departement = $departement;
+        return $this;
+    }
+
+    public function getPrenomNom(): ?string
+    {
+        return $this->nom." ".$this->prenom;
     }
 
 }
