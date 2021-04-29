@@ -1,0 +1,36 @@
+
+<table id="User" class="table table-striped" >
+    <thead>
+    <tr>
+
+        <th>Nom</th>
+        <th>Prenom</th>
+        <th>Login</th>
+        <th>E_mail</th>
+        <th>date de naissance</th>
+        <th>Role</th>
+        <th>Mot de passe</th>
+
+
+
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for User in User %}
+        <tr>
+
+            <td>{{ User.nom }}</td>
+            <td>{{ User.prenom }}</td>
+            <td>{{ User.username }}</td>
+            <td>{{ User.email }}</td>
+            <td>{{ User.datedenaissance |date('d-m-Y') }}</td>
+            <td>{{ User.Role }}</td>
+            <td>{{ User.Mdp }}</td>
+
+
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

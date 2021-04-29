@@ -1,0 +1,52 @@
+{% extends 'frontOffice.html.twig ' %}
+
+{% block title %}Hello AssiduiteController!{% endblock %}
+
+{% block body %}
+
+    <table class="table table-striped">
+
+        <thead>
+
+        <tr>
+            <th>ID Assiduite</th>
+
+            <th>Date</th>
+            <th>Valeur</th>
+            <th>Matiere</th>
+            <th>UserName</th>
+
+
+
+
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for assiduite in assiduite %}
+            <tr>
+                <td>{{ assiduite.id }}</td>
+                <td>{{ assiduite.date|date("d/m/Y") }}</td>
+                <td>{{ assiduite.valeur }}</td>
+                <td>  {{ assiduite.matiere.nomMatiere }}</td>
+                <td>  {{ assiduite.user.userName }}</td>
+
+                <td>   <a class="btn btn-primary" href="{{ path('assiduite_show', {'id':assiduite.id}) }}">Show </a></td>
+                <td>   <a class="btn btn-secondary" href="{{ path('assiduite_edit', {'id':assiduite.id}) }}">Edit</a></td>
+
+                <td>   <a class="btn btn-danger" onclick="return confirm('Are you sure ?')" href="{{ path('assiduite_delete', {'id':assiduite.id}) }}">Delete </a></td>
+
+
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">Nothing exists Yet</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+    <a class="btn btn-primary"  href="{{ path('assiduite_new') }}">Ajouter</a>
+
+{% endblock %}

@@ -1,9 +1,11 @@
 <?php
 namespace App\Controller;
+use App\Entity\Departement;
 use App\Entity\FindProperty;
 use App\Entity\User;
 use Monolog\Handler\Curl\Util;
 use Psr\Container\ContainerInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -23,6 +25,8 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\LengthValidator;
 use App\Form\FindFormType;
 use \Symfony\Bundle\MonologBundle\SwiftMailer;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 
 class UserController extends AbstractController
@@ -69,6 +73,7 @@ class UserController extends AbstractController
             ->add('Role', ChoiceType::class, ['choices' => ['Enseignant' => 'Enseignant', 'Admin' => 'Admin','Etudiant' => 'Etudiant'],])
             ->add('date_de_naissance', BirthdayType::class, ['widget' => 'choice',], array('label' => 'Date de naissance'))
             ->add('Mdp', PasswordType::class, array('label' => 'Mot de passe'))
+            ->add('departement',EntityType::class,['class' => Departement::class, 'choice_label' => 'nom', 'label' => 'Département'])
             ->add('save', SubmitType::class, array('label' => 'Créer'))->getForm();
 
 
@@ -111,7 +116,6 @@ class UserController extends AbstractController
             ->add('prenom', TextType::class, array('label' => 'Prenom'))
             ->add('user_Name', TextType::class, array('label' => 'Login'))
             ->add('email', EmailType::class, array('label' => 'E mail'))
-            ->add('Role', ChoiceType::class, ['choices' => ['Enseignant' => 'Enseignant', 'Admin' => 'Admin','Etudiant' => 'Etudiant'],])
             ->add('date_de_naissance', BirthdayType::class, ['widget' => 'choice',], array('label' => 'Date de naissance'))
             ->add('Mdp', PasswordType::class, array('label' => 'Mot de passe'))
             ->add('save', SubmitType::class, array('label' => 'Modifier'))->getForm();
@@ -167,8 +171,10 @@ class UserController extends AbstractController
 
         $state = "Bloquè";
         $state1 = "Bloqué";
+        $state2 = "Bloque";
         $A = 'Admin';
         $E = 'Enseignant';
+        $ET = 'Etudiant';
 
         if ($u->getRole() == $state) {
             $u->setRole('Enseignant');
@@ -176,8 +182,14 @@ class UserController extends AbstractController
             $u->setRole('Admin');
         } elseif ($u->getRole() == $A) {
             $u->setRole($state1);
-        } else
+        } elseif ($u->getRole() == $E) {
             $u->setRole($state);
+        } elseif ($u->getRole() == $state2) {
+            $u->setRole($ET);
+        } elseif ($u->getRole() == $ET) {
+            $u->setRole($state2);
+        }
+
         $entityManager->flush();
         $response = new Response();
         $response->send();
@@ -217,6 +229,35 @@ class UserController extends AbstractController
             ->add('prenom', TextType::class, array('label' => 'Prenom'))
             ->add('user_Name', TextType::class, array('label' => 'Login'))
             ->add('email', EmailType::class, array('label' => 'E mail'))
+            ->add('date_de_naissance', BirthdayType::class, ['widget' => 'choice',], array('label' => 'Date de naissance'))
+            ->add('Mdp', PasswordType::class, array('label' => 'Mot de passe'))
+            ->add('save', SubmitType::class, array('label' => 'Modifier'))->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+
+
+        }
+        return $this->render('user/etu.html.twig', ['form' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/user/editad/{id}", name="editad_User")
+     * Method({"GET", "POST"})
+     */
+    public function editad(Request $request, $id)
+    {
+
+        $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+
+        $form = $this->createFormBuilder($user)
+            ->add('nom', TextType::class, array('label' => 'Nom'))
+            ->add('prenom', TextType::class, array('label' => 'Prenom'))
+            ->add('user_Name', TextType::class, array('label' => 'Login'))
+            ->add('email', EmailType::class, array('label' => 'E mail'))
             ->add('Role', ChoiceType::class, ['choices' => ['Enseignant' => 'Enseignant', 'Admin' => 'Admin','Etudiant' => 'Etudiant'],])
             ->add('date_de_naissance', BirthdayType::class, ['widget' => 'choice',], array('label' => 'Date de naissance'))
             ->add('Mdp', PasswordType::class, array('label' => 'Mot de passe'))
@@ -228,10 +269,43 @@ class UserController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
 
-            return $this->render('FrontEtud.html.twig', ['form' => $form->createView()]);
         }
-        return $this->render('FrontEtud.html.twig', ['form' => $form->createView()]);
+        return $this->render('user/ens.html.twig', ['form' => $form->createView()]);
     }
 
+    /**
+     * @Route("/user/imp", name="imp", methods={"GET"})
+     */
+    public function imp(): Response
+    {
+        $u = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findAll();
+
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('user/imp.html.twig',
+            [ 'User' => $u,]);
+
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (force download)
+        $dompdf->stream("ListUser_finale.pdf", [
+            "Attachment" => true
+        ]);
+        return $this->redirectToRoute('User_list');
+    }
 
 }

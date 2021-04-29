@@ -45,8 +45,6 @@ class User
      */
     private $email;
 
-
-
     /**
      * @ORM\Column(type="string", length=20)
      * @Assert\Length(
@@ -91,12 +89,6 @@ class User
      */
     private $notes;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Classe::class , inversedBy="user")
-     * * @ORM\JoinColumn(nullable=false)
-     */
-    private $classe;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -124,10 +116,6 @@ class User
         $this->prenom = $prenom;
 
         return $this;
-    }
-    public function getPrenomNom(): ?string
-    {
-        return $this->nom." ".$this->prenom;
     }
 
     public function getUserName(): ?string
@@ -321,18 +309,6 @@ class User
                 $note->setUser(null);
             }
         }
-    }
-
-    public function getClasse(): ?Classe
-    {
-        return $this->classe;
-    }
-
-    public function setClasse(?Classe $classe): self
-    {
-        $this->classe= $classe;
-
-        return $this;
     }
 
 }

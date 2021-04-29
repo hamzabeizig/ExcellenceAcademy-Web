@@ -1,0 +1,10 @@
+{% extends 'base1.html.twig' %}
+{% block body %}
+    <h3>Matiere</h3>
+    {{ form_start(form,{'attr':{'novalidate':'novalidate'}}) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+
+    <a href="{{ path('matiere_list_matiere') }}">Retour</a>
+{% endblock %}

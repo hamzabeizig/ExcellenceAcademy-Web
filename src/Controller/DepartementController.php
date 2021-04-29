@@ -55,7 +55,7 @@ class DepartementController extends AbstractController
                 //si si aucun nom n'est fourni on affiche tous les articles
                 $departements = $this->getDoctrine()->getRepository(Departement::class)->findAll();
         }
-        return $this->render('departement/notesParClasse.html.twig', ['form' => $form->createView(), 'departements' => $departements]);
+        return $this->render('departement/index.html.twig', ['form' => $form->createView(), 'departements' => $departements]);
     }
 
 
@@ -149,7 +149,7 @@ class DepartementController extends AbstractController
             return $this->redirectToRoute('departement_list');
         }
 
-        return $this->render('departement/editNote.html.twig', ['form' =>
+        return $this->render('departement/edit.html.twig', ['form' =>
             $form->createView()]);
 
 
@@ -244,7 +244,7 @@ class DepartementController extends AbstractController
             ->find($id);
 
         $enseignants = $reunion->getEnseignants();
-        return $this->render('departement/showNote.html.twig', ['enseignants' => $enseignants, 'reunion' => $reunion]);
+        return $this->render('departement/show.html.twig', ['enseignants' => $enseignants, 'reunion' => $reunion]);
 
 
     }
@@ -333,7 +333,7 @@ class DepartementController extends AbstractController
         $reunion->removeEnseignant($enseignant);
         $em=$this->getDoctrine()->getManager();
         $em->flush();
-        return $this->render('departement/showNote.html.twig', ['reunion' => $reunion ,'enseignant' => $enseignant, 'idR' => $id]);
+        return $this->render('departement/show.html.twig', ['reunion' => $reunion ,'enseignant' => $enseignant, 'idR' => $id]);
     }
     /**
      * @Route("/affiche/{id}" , name="affichereu")

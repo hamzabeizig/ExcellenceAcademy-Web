@@ -1,0 +1,79 @@
+{% extends 'base1.html.twig' %}{% block body %}
+    <div class="container-fluid">
+        <script src="{{ asset('jquery.min.js') }}"></script>
+    <table class="table-sm align-middle" id="tableac">
+
+        <thead>
+
+        <tr>
+            <th>ID Matiere</th>
+            <th>Nom Matiere</th>
+            <th>Coefficient</th>
+            <th>Volume Heurs </th>
+
+
+
+
+
+        </tr>
+        </thead>
+        <tbody>
+        <input type="text" id="search" class="form-control" placeholder="Search">
+        {% for matiere in matiere %}
+            <tr>
+                <td>  {{ matiere.id }}</td>
+                <td>{{ matiere.nomMatiere }}</td>
+                <td>{{ matiere.coefficient }}</td>
+                <td>  {{ matiere.volumeH }}</td>
+
+
+                <td>   <a class="btn btn-primary" href="{{ path('matiere_show_matiere', {'id':matiere.id}) }}">Show </a></td>
+                <td>   <a class="btn btn-secondary" href="{{ path('matiere_matiere_edit', {'id':matiere.id}) }}">Edit</a></td>
+
+                <td>   <a class="btn btn-danger" onclick="return confirm('Are you sure ?')" href="{{ path('matiere_matiere_delete', {'id':matiere.id}) }}">Delete </a></td>
+
+
+
+            </tr>
+            <script>
+                $(document).ready(function(){
+                    $('#search').keyup(function(){
+                        search_table($(this).val());
+                    });
+                    function search_table(value){
+                        $('#tableac tbody tr').each(function(){
+                            var found = 'false';
+                            $(this).each(function(){
+                                if($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0)
+                                {
+                                    found = 'true';
+                                }
+                            });
+                            if(found == 'true')
+                            {
+                                $(this).show();
+
+                            }
+                            else
+                            {
+                                $(this).hide();
+
+                            }
+                        });
+                    }
+                });
+            </script>
+
+            {% else %}
+            <tr>
+                <td colspan="7">Nothing exists Yet</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+    <a class="btn btn-primary"  href="{{ path('matiere_add_matiere') }}">Ajouter</a>
+    <br>
+
+  </div>
+{% endblock %}
