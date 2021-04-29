@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+<tr {% for e in evenement %}>
+    <td>{{e.id_evenement}} </td>
+    <td>{{e.description}} </td>
+
+    <td><a href="{{ path('d',{'id':e.id_evenement}) }}" onclick="return confirm('Etes vous sûr de supprimer cet evenement?');">Delete</a></td>
+
+
+
+
+</tr {%endfor%}}>
+
+
+
+</table>
+
+</body>
+</html>

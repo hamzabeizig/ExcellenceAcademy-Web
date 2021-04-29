@@ -1,0 +1,83 @@
+
+{% extends 'base.html.twig' %}
+{% block title%} Liste des Evènements{% endblock %}
+
+{% block body %}
+
+<div style="margin-top: 200px; margin-left: 5px">
+<div class="titre" style="margin-left: 350px;margin-top:100px ">
+<h1>Liste des Evènements</h1>
+</div>
+{{ form_start(form) }}
+
+<div class="form-row align-items-end"  >
+ <div class="col">
+   {{ form_row(form.nom) }}
+ </div>
+
+  <div class="col">
+   <div class="form-group">
+      <button type="submit" class="btn btn-success">Rechercher</button>
+    </div>
+ </div>
+</div>
+ {{ form_end(form) }}
+
+<hr style="visibility: hidden ">
+          <table border="2px"  style="margin-left:auto; margin-right: auto;text-align: center" class="table table-striped">
+
+        <tr>
+
+            {% if evenement %}
+
+            <th>nom</th>
+            <th>date_evenement</th>
+            <th>responsable</th>
+            <th>description</th>
+            <th>nbr places</th>
+            <th>Categorie</th>
+            <th>Action</th>
+            <th>Action</th>
+            <th>Action</th>
+
+
+
+        </tr>
+        <tr {%for e in evenement%}>
+
+            <td>{{e.nom_evenement}} </td>
+            <td>{{e.date_evenement|date('Y-m-d')}} </td>
+            <td>{{e.responsable}} </td>
+            <td>{{e.description}} </td>
+            <td>{{e.nbr_place}} </td>
+            <td>{{e.categorie.Name}} </td>
+
+
+
+
+            <td><a href="{{ path('update',{'id_evenement':e.id_evenement}) }}" class="btn btn-dark" >Update</a></td>
+
+            <td><a href="{{ path('d',{'id_evenement':e.id_evenement}) }}" class="btn btn-danger" onclick="return confirm('Etes vous sûr de supprimer cet evènement?')";>Delete</a></td>
+
+              <td><a href="{{ path('participer',{'id_event':e.id_evenement,'nbrplace':e.nbr_place-1,'nom_event':e.nom_evenement}) }}" class="btn btn-dark" >Participer</a></td>
+
+
+
+
+
+        </tr {%endfor%}}>
+
+
+
+    </table>
+
+      <div style="margin-left: 450px">
+           <a href="evenement/Add"><button class="btn btn-primary"   >Organiser Un Evènement</button></a>
+</div>
+    </div>
+{% else %}
+    <p>Aucun Evènement</p>
+  {% endif %}
+
+{% endblock %}
+

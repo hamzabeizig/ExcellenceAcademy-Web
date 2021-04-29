@@ -54,6 +54,7 @@ class CategoriesController extends AbstractController
             $em->persist($categorie);
             $em->flush();
             return $this->redirectToRoute("AfficheC");
+            $this->addFlash('success', 'Catégorie Ajoutée');
 
 
         }
@@ -74,6 +75,8 @@ class CategoriesController extends AbstractController
         $em -> remove($categorie);
         $em -> flush();
         return $this->redirectToRoute("AfficheC");
+        $this->addFlash('success', 'Catégorie Supprimée');
+
 
     }
 
@@ -92,6 +95,8 @@ class CategoriesController extends AbstractController
             $em = $this->getDoctrine()->getManager() ;
             $em -> flush();
             return $this->redirectToRoute("AfficheC");
+            $this->addFlash('success', 'catégorie modifiée');
+
 
         }
         return $this->render('categorie/updatecategorie.html.twig',['form'=>$form->createView()]);

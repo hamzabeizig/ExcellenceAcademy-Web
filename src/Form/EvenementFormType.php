@@ -20,7 +20,6 @@ class EvenementFormType extends AbstractType
             ->add('date_evenement',DateType::class)
             ->add('responsable',TextType::class)
             ->add('description',TextType::class)
-            ->add('id_user',TextType::class)
             ->add('nbr_place',TextType::class)
             ->add('categorie',EntityType::class,['class' => Categorie::class,
                 'choice_label' => 'Name'  ])
