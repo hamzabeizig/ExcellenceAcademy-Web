@@ -5,13 +5,6 @@
         "This file is @generated automatically"
     ],
     "content-hash": "99958ce2070c58e55b1b600a9a6be69e",
-{
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
-        "This file is @generated automatically"
-    ],
-    "content-hash": "99958ce2070c58e55b1b600a9a6be69e",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
