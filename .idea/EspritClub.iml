@@ -114,7 +114,11 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/dompdf/dompdf" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/sabberworm/php-css-parser" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/twilio/sdk" />
+<<<<<<< HEAD
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/ux-chartjs" />
+=======
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/messenger" />
+>>>>>>> cbe09b8b1d9947623b43d38e7f383e19bcd221e6
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
