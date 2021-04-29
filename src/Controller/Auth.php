@@ -41,6 +41,7 @@ class Auth extends AbstractController
             if (count($repo) > 0) {
 
                 $role = $repo[0];
+
                 $maV = $session->get('maV');
                 $idu = $role->getId();
                 $session->set('maV',$idu);

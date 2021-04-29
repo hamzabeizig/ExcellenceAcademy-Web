@@ -1,0 +1,33 @@
+{% extends 'base1.html.twig' %}
+{% block body %}
+    <div class="container-fluid">
+
+        <h1>Assiduite</h1>
+
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Id</th>
+                <td>  {{ matiere.idMatiere }}</td>
+            <tr>
+                <th>Nom Matiere</th>
+                <td>{{ matiere.nomMatiere }}</td>
+
+            </tr>
+            <tr>
+                <th>Coefficient</th>
+                <td>{{ matiere.coefficient }}</td>
+            </tr>
+            <tr>
+                <th>Volume Heurs</th>
+                <td>  {{ matiere.volumeH }}</td>
+            </tr>
+
+            </tbody>
+        </table>
+
+        <a href="{{ path('matiere_list_matiere') }}">Retour</a>
+
+    </div>
+
+{% endblock %}

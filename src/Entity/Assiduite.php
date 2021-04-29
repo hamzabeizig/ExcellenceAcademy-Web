@@ -18,25 +18,55 @@ class Assiduite
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class , inversedBy="Assiduites")
-     * * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\User" , inversedBy="Assiduite")
+     * * @ORM\JoinColumn(name="id_user",nullable=false)
      */
     private $user;
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-        return $this;
-    }
+
+
+
+    /**
+     * @var \Matiere
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Matiere",inversedBy="Assiduite")
+     * @ORM\JoinColumn(name="id_matiere", nullable=false)
+     */
+    private $matiere;
+
+
 
     /**
      * @ORM\Column(type="date")
      */
     private $date;
+
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+        return $this;
+
+    }
+
+
+    public function getMatiere(): ?Matiere
+    {
+        return $this->matiere;
+    }
+
+
+    public function setMatiere(?Matiere $matiere): self
+    {
+        $this->matiere = $matiere;
+        return $this;
+    }
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -47,6 +77,7 @@ class Assiduite
     {
         return $this->id;
     }
+
 
     public function getDate(): ?\DateTimeInterface
     {

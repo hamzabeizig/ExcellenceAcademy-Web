@@ -97,6 +97,10 @@ class User
      * @ORM\JoinColumn(nullable=false)
      */
     private $departement;
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="Assiduite")
+     */
+    private $assiduite;
 
     public function getId(): ?int
     {
