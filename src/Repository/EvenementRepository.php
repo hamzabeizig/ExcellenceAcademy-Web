@@ -47,4 +47,24 @@ class EvenementRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findByIdUser($id)
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.id_user = :idUser')
+            ->setParameter('idUser', $id)
+            ->getQuery()
+            ->getResult();
+    }
+    public function findAcceptedEvents(){
+        return $this->createQueryBuilder('e')
+            ->where('e.etat = :etat')
+            ->setParameter('etat', "Accepted")
+            ->getQuery()->getResult();
+    }
+    public function findNotAcceptedEvents(){
+        return $this->createQueryBuilder('e')
+            ->where('e.etat != :etat')
+            ->setParameter('etat', "Accepted")
+            ->getQuery()->getResult();
+    }
 }

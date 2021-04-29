@@ -1,0 +1,59 @@
+
+{% extends 'base1.html.twig' %}
+{% block title%} Liste des Stages{% endblock %}
+
+{% block body %}
+<div style="margin-top: 200px; margin-left: 5px">
+ <div style="margin-left:350px">
+
+            <h1>Liste des Societes Partenaires</h1>
+
+        </div>
+
+        <table border="2px"  style="margin-left:auto; margin-right: auto" class="table table-striped">
+
+            <tr>
+
+                <th>id</th>
+                <th>nom</th>
+                <th>Email</th>
+                <th>NumeroTel</th>
+                <th>Domaine</th>
+                <th>Action</th>
+                <th>Action</th>
+
+
+
+
+
+            </tr>
+            <tr {%for sp in societeP%}>
+
+                <td>{{sp.id}} </td>
+                <td>{{sp.Nom}} </td>
+                <td>{{sp.Email}} </td>
+                <td>{{sp.NumeroTel}} </td>
+                <td>{{sp.Domaine}} </td>
+
+
+                <td><a href="{{ path('updateSP',{'id':sp.id}) }}" class="btn btn-dark">Update</a></td>
+
+                <td><a href="{{ path('dsp',{'id':sp.id}) }}" class="btn btn-danger" onclick="return confirm('Etes vous sûr de supprimer cette Société Partenaire?');">Delete</a></td>
+
+
+
+
+
+
+            </tr {%endfor%}}>
+
+
+
+        </table>
+      <div style="margin-left: 450px">
+           <a href="societe_p/Add"><button class="btn btn-primary"  >Ajouter Une Société Partenaire</button></a>
+</div>
+    </div>
+
+
+{% endblock %}

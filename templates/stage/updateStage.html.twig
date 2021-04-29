@@ -1,0 +1,20 @@
+
+{% extends 'base1.html.twig' %}
+{% block title%} Modifier Un Stage{% endblock %}
+
+{% block body %}
+    <div style="margin-top: 200px; margin-left: 5px">
+        <div class="titre" style="margin-left: 350px;margin-top:100px ">
+            <h1>Modifier Un Stage</h1>
+        </div>
+        <hr style="visibility: hidden ">
+        <div style="margin-left: 50px">
+            {{ form(form, {'attr': {'novalidate': 'novalidate'}})   }}
+        </div>
+
+
+    </div>
+
+
+{% endblock %}
+
