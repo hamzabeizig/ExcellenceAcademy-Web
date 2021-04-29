@@ -14,16 +14,16 @@
                     <a  href="/affiche/{{ app.session.get('maV') }}" class="nav-link">Reunion</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/" class="nav-link">Notes</a>
+                    <a href="{{ path('note_par_classe')}}" class="nav-link">Notes</a>
                 </li>
                 <li class="nav-item">
                     <a href="/" class="nav-link">Assiduitè</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/" class="nav-link">Cours</a>
+                    <a href="{{ path('cours_show')}}" class="nav-link">Cours</a>
                 </li>
                 <li class="nav-item">
-                <a href="/" class="nav-link">Deconnexion</a>
+                <a href="/" class="nav-link">Déconnexion</a>
                 </li>
             </ul>
         </div>

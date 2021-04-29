@@ -49,7 +49,7 @@ class UserController extends AbstractController
             } else
                 $User = $this->getDoctrine()->getRepository(User::class)->findAll();
         }
-        return $this->render('user/index.html.twig', ['form' => $form->createView(), 'User' => $User]);
+        return $this->render('user/notesParClasse.html.twig', ['form' => $form->createView(), 'User' => $User]);
 
     }
 
@@ -123,7 +123,7 @@ class UserController extends AbstractController
             $entityManager->flush();
 
         }
-        return $this->render('user/edit.html.twig', ['form' => $form->createView()]);
+        return $this->render('user/editNote.html.twig', ['form' => $form->createView()]);
     }
 
     /**

@@ -14,13 +14,13 @@
                     <a  href="/" class="nav-link">Evenement</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/" class="nav-link">Notes</a>
+                    <a href="/art_cat2/{{ app.session.get('maV') }}" class="nav-link">Notes</a>
                 </li>
                 <li class="nav-item">
                     <a href="/" class="nav-link">Assiduitè</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/" class="nav-link">Cours</a>
+                    <a href="{{ path('cours_show2') }}" class="nav-link">Cours</a>
                 </li>
                 <li class="nav-item">
                     <a href="/" class="nav-link">Stages</a>

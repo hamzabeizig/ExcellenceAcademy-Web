@@ -42,6 +42,15 @@ class Classe
      * @ORM\Column(type="string", length=255)
      */
     private $nom_salle;
+    /**
+     * @ORM\OneToMany(targetEntity=Note::class, mappedBy="classe")
+     */
+    private $notes;
+
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="classe")
+     */
+    private $user;
 
     public function getId(): ?int
     {
@@ -114,4 +123,65 @@ class Classe
         }
         return $this;
     }
+
+    /**
+     * @return Collection|Note[]
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): self
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes[] = $note;
+            $note->setNote($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): self
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getNote() === $this) {
+                $note->setNote(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUser(): Collection
+    {
+        return $this->user;
+    }
+
+    public function addUSer(User $user): self
+    {
+        if (!$this->user->contains($user)) {
+            $this->user[] = $user;
+            $user->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->user->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getClasse() === $this) {
+                $user->setClasse(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

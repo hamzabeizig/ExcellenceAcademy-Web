@@ -19,6 +19,20 @@ class NoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Note::class);
     }
 
+
+    public function OrderForEtudiant(int $id){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT p
+            FROM App\Entity\Note p
+            WHERE p.user = :id
+            ORDER BY p.note ASC'
+        )->setParameter('id', $id);
+
+        // returns an array of Product objects
+        return $query->getResult();
+    }
+
     // /**
     //  * @return Note[] Returns an array of Note objects
     //  */
