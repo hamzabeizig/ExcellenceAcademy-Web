@@ -53,7 +53,7 @@ class UserController extends AbstractController
             } else
                 $User = $this->getDoctrine()->getRepository(User::class)->findAll();
         }
-        return $this->render('user/notesParClasse.html.twig', ['form' => $form->createView(), 'User' => $User]);
+        return $this->render('user/index.html.twig', ['form' => $form->createView(), 'User' => $User]);
 
     }
 
@@ -261,6 +261,7 @@ class UserController extends AbstractController
             ->add('Role', ChoiceType::class, ['choices' => ['Enseignant' => 'Enseignant', 'Admin' => 'Admin','Etudiant' => 'Etudiant'],])
             ->add('date_de_naissance', BirthdayType::class, ['widget' => 'choice',], array('label' => 'Date de naissance'))
             ->add('Mdp', PasswordType::class, array('label' => 'Mot de passe'))
+            ->add('departement',EntityType::class,['class' => Departement::class, 'choice_label' => 'nom', 'label' => 'Département'])
             ->add('save', SubmitType::class, array('label' => 'Modifier'))->getForm();
 
         $form->handleRequest($request);
