@@ -104,7 +104,7 @@ class DepartementController extends AbstractController
             ];
         }
         $data= json_encode($rdvs);
-         return $this->render('departement/reunion.html.twig', ['form' => $form->createView(), 'reunions' => $reunions,'data'=>$data]);
+        return $this->render('departement/reunion.html.twig', ['form' => $form->createView(), 'reunions' => $reunions,'data'=>$data]);
     }
 
     /**

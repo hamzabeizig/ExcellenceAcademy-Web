@@ -202,7 +202,7 @@ class StageController extends AbstractController
             ->setFrom('excellenceacademy878@gmail.com')
             ->setTo($conv->getEmail())
             ->setBody('Votre demande de convention a été bien acceptée, vous trouvez ci joint une copie de la convention')
-            ->attach(\Swift_Attachment::fromPath('C:\xampp\htdocs\code-Army2\public\fichiers\convention.pdf'))
+            ->attach(\Swift_Attachment::fromPath('public\fichiers\convention.pdf'))
         ;
       var_dump($conv->getEmail());
         $mailer->send($message);
@@ -227,7 +227,7 @@ class StageController extends AbstractController
 
             $message = (new \Swift_Message('Postulation'))
                 ->setFrom('excellenceacademy878@gmail.com')
-                ->setTo('mohamedkhalil.guedria@esprit.tn')
+                ->setTo('hamza.beizig@esprit.tn')
                 ->setBody('nouvelle postulation')
                 ->attach(\Swift_Attachment::fromPath('C:\xampp\htdocs\code-Army2\public\fichiers\CV_Mohamed-Khalil Guedria.pdf'))
                 ->attach(\Swift_Attachment::fromPath('C:\xampp\htdocs\code-Army2\public\fichiers\Lettre De Motivation_Mohamed-Khalil Guedria.pdf'))

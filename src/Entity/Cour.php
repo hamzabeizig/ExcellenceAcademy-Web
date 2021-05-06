@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\CourRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,7 +19,10 @@ class Cour
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string")
+     *
+     * @Assert\NotBlank(message="Please, upload the product brochure as a PDF file.")
+     * @Assert\File(mimeTypes={ "application/pdf" })
      */
     private $cour;
 
@@ -35,7 +39,7 @@ class Cour
      * @ORM\ManyToOne(targetEntity=User::class , inversedBy="cours")
      * * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    public $user;
     /**
      * @ORM\ManyToOne(targetEntity=Matiere::class , inversedBy="cours")
      * * @ORM\JoinColumn(nullable=false)
@@ -79,18 +83,17 @@ class Cour
 
         return $this;
     }
-    public function getCour(): ?string
+    public function getCour()
     {
         return $this->cour;
     }
 
-    public function setCour(string $cour): self
+    public function setCour($cour)
     {
         $this->cour = $cour;
 
         return $this;
     }
-
     public function getNomCours(): ?string
     {
         return $this->nom_cours;

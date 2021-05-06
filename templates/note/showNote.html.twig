@@ -1,0 +1,3 @@
+{% extends 'frontOffice.html.twig' %}
+{% block title %}{{ note.note }}{% endblock %}
+{% block body %} <h1 style="padding-top: 50px" >{{  note.user.nom }} {{  note.user.prenom }}</h1> <h3 style="padding-top: 50px">{{ note.note }}</h3>  <hr> <a href="/art_cat">Retour</a> {% endblock %}

@@ -169,7 +169,7 @@ class EvenementsController extends AbstractController
 
         $message = (new \Swift_Message('Demande Evenement'))
             ->setFrom('excellenceacademy878@gmail.com')
-            ->setTo('wael.amri1@esprit.tn')
+            ->setTo('hamza.beizig@esprit.tn')
             ->setBody('Votre demande de l evenement a été bien acceptée.')
 
         ;
@@ -195,7 +195,7 @@ class EvenementsController extends AbstractController
 
         $message = (new \Swift_Message('Demande Evenement'))
             ->setFrom('excellenceacademy878@gmail.com')
-            ->setTo('wael.amri1@esprit.tn')
+            ->setTo('hamza.beizig@esprit.tn')
             ->setBody('Votre demande de l evenement a été refusée.')
 
         ;
