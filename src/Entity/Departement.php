@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DepartementRepository")
@@ -17,6 +18,7 @@ class Departement
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups ("Departments")
      */
     private $id;
 
@@ -28,6 +30,8 @@ class Departement
 * minMessage = "Le nom d'un departement doit comporter au moins {{ limit }} caractères",
 * maxMessage = "Le nom d'un departement doit comporter au plus {{ limit }} caractères"
 * )
+ * @Groups ("Departments")
+ *  @Groups ("Reunions")
 */
     private $nom;
 
@@ -39,10 +43,12 @@ class Departement
      * minMessage = "Le nom du chef de departement doit comporter au moins {{ limit }} caractères",
      * maxMessage = "Le nom du chef de departement doit comporter au plus {{ limit }} caractères"
      * )
+     * @Groups ("Departments")
      */
     private $chef_dep;
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Reunion", mappedBy="departement")
+     * @Groups ("Departments")
      */
     private $reunions;
     public function __construct()
@@ -54,6 +60,7 @@ class Departement
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="departement")
+     * @Groups ("Departments")
      */
     private $users;
 

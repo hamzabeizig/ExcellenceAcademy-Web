@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ReunionRepository::class)
@@ -18,6 +19,8 @@ class Reunion
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups ("Reunions")
+     *  @Groups ("Reunion")
      */
     private $id;
 
@@ -29,30 +32,40 @@ class Reunion
      * minMessage = "Le nom d'une reunion doit comporter au moins {{ limit }} caractères",
      * maxMessage = "Le nom d'une reunion doit comporter au plus {{ limit }} caractères"
      * )
+     * @Groups ("Departments")
+     *  @Groups ("Reunions")
+     * @Groups ("Reunion")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="date")
+     *
      */
     private $date;
 
     /**
      * @ORM\Column(type="datetime")
+     *  @Groups ("Reunions")
+     * @Groups ("Reunion")
      */
     private $start;
 
     /**
      * @ORM\Column(type="datetime")
+     *  @Groups ("Reunions")
+     * @Groups ("Reunion")
      */
     private $end;
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Departement", inversedBy="reunions")
      * @ORM\JoinColumn(nullable=false)
+     *  @Groups ("Reunions")
      */
     private $departement;
     /**
  * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="reunions")
+     *  @Groups ("Reunions")
  */
     private $users;
 
@@ -62,12 +75,16 @@ class Reunion
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  @Groups ("Reunions")
+     * @Groups ("Reunion")
      */
     private $matiere;
 
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  @Groups ("Reunions")
+     * @Groups ("Reunion")
      */
     private $objectif;
 

@@ -3,14 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\DepartementSearch;
-use App\Entity\Enseignant;
-use App\Entity\EnseignantAdd;
+
 use App\Entity\Reunion;
 use App\Entity\PropertySearch;
 use App\Entity\User;
 use App\Form\DepartementSearchType;
 use App\Form\PropertySearchType;
-use App\Form\EnseignantAddType;
 use App\Form\Reunion1Type;
 use App\Entity\Departement;
 use App\Form\DepartementType;
@@ -24,7 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use App\Form\ArticleType;
+use Symfony\Component\Serializer\SerializerInterface;
 
 
 class DepartementController extends AbstractController
@@ -33,8 +31,9 @@ class DepartementController extends AbstractController
 
     /**
      * @Route("/departement", name="departement_list")
+     *  @Method({"GET"})
      */
-    public function index(Request $request): Response
+    public function index(Request $request ,SerializerInterface  $serializer): Response
     {
 
         $DepartementSearch = new DepartementSearch();
@@ -48,23 +47,36 @@ class DepartementController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             //on récupère le nom d'article tapé dans le formulair
             $nom = $DepartementSearch->getNom();
-            if ($nom != "")
+            if ($nom != "") {
                 //si on a fourni un nom d'article on affiche tous les articles ayant ce n
 
                 $departements = $this->getDoctrine()->getRepository(Departement::class)->findBy(['nom' => $nom]);
+                $data = $serializer->serialize($departements, 'json',['groups'=>'Departments']);
+                $response = new Response($data);
+            }
             else
                 //si si aucun nom n'est fourni on affiche tous les articles
+            {
                 $departements = $this->getDoctrine()->getRepository(Departement::class)->findAll();
+
+                $data = $serializer->serialize($departements, 'json',['groups'=>'Departments']);
+                $response = new Response($data);
+            }
+
+
         }
-        return $this->render('departement/index.html.twig', ['form' => $form->createView(), 'departements' => $departements]);
+        $response->headers->set('Content_Type','application/json');
+        return $response;
+       // return $this->render('departement/index.html.twig', ['form' => $form->createView(), 'departements' => $departements]);
     }
 
 
     /**
      * @Route("/reunion", name="reunion_list")
+     * @Method({"GET"})
      */
 
-    public function indexReu(Request $request)
+    public function indexReu(Request $request , SerializerInterface  $serializer)
     {
         $propertySearch = new PropertySearch();
         $form = $this->createForm(PropertySearchType::class, $propertySearch);
@@ -83,13 +95,22 @@ class DepartementController extends AbstractController
             if (($departement1 != null) && ($nom != null)) {
                 $departement = $this->getDoctrine()->getRepository(Departement::class)->findBy(['nom' => $departement1]);
                 $reunions = $this->getDoctrine()->getRepository(Reunion::class)->findBy(['departement' => $departement, 'nom' => $nom]);
+
+                $data1=$serializer->serialize($reunions,'json',['groups'=>'Reunions']);
+                $response =new Response($data1);
             } else if (($departement1 != null) && ($nom == null)) {
                 $departement = $this->getDoctrine()->getRepository(Departement::class)->findBy(['nom' => $departement1]);
                 $reunions = $this->getDoctrine()->getRepository(Reunion::class)->findBy(['departement' => $departement]);
+                $data1=$serializer->serialize($reunions,'json',['groups'=>'Reunions']);
+                $response =new Response($data1);
             } else if (($departement1 == null) && ($nom != null)) {
                 $reunions = $this->getDoctrine()->getRepository(Reunion::class)->findBy(['nom' => $nom]);
+                $data1=$serializer->serialize($reunions,'json',['groups'=>'Reunions']);
+                $response =new Response($data1);
             } else
                 $reunions = $this->getDoctrine()->getRepository(Reunion::class)->findAll();
+            $data1=$serializer->serialize($reunions,'json',['groups'=>'Reunions']);
+            $response =new Response($data1);
 
 
         }
@@ -104,28 +125,28 @@ class DepartementController extends AbstractController
             ];
         }
         $data= json_encode($rdvs);
-        return $this->render('departement/reunion.html.twig', ['form' => $form->createView(), 'reunions' => $reunions,'data'=>$data]);
+        $response->headers->set('Content_Type','application/json');
+        return $response;
+
+        //return $this->render('departement/reunion.html.twig', ['form' => $form->createView(), 'reunions' => $reunions,'data'=>$data]);
     }
 
     /**
      * @Route("/departement/new", name="new_departement")
-     * Method({"GET", "POST"})
+     * Method({"POST"})
      */
-    public function new(Request $request)
+    public function new(Request $request ,SerializerInterface $serializer)
     {
+        $content = $request->getContent();
+        $data = $serializer->deserialize($content,Departement::class,'json');
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($data);
+        $em->flush();
 
-        $departement = new Departement();
-        $form = $this->createForm(DepartementType::class, $departement);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $reunion = $form->getData();
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($departement);
-            $entityManager->flush();
-            return $this->redirectToRoute('departement_list');
-        }
-        return $this->render('departement/new.html.twig', ['form' =>
-            $form->createView()]);
+        return new Response('Department added ',Response::HTTP_CREATED);
+
+        //return $this->render('departement/new.html.twig', ['form' =>
+         //   $form->createView()]);
 
 
     }
@@ -134,9 +155,9 @@ class DepartementController extends AbstractController
      * @Route("/departement/edit/{id}", name="edit_departement")
      * Method({"GET", "POST"})
      */
-    public function edit(Request $request, $id)
+    public function edit(Request $request, Departement $departement ,SerializerInterface $serializer)
     {
-        $departement = new Departement;
+       /* $departement = new Departement;
         $departement = $this->getDoctrine()->getRepository(Departement::class)->find($id);
 
         $form = $this->createForm(DepartementType::class, $departement);
@@ -148,10 +169,21 @@ class DepartementController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('departement_list');
-        }
+        }*/
+        $data=$serializer->serialize($departement,'json',['groups'=>'Departments']);
 
-        return $this->render('departement/edit.html.twig', ['form' =>
-            $form->createView()]);
+        $response =new Response($data);
+
+
+        $content = $request->getContent();
+        $data = $serializer->deserialize($content,Departement::class,'json');
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($data);
+        $em->flush();
+        $response->headers->set('Content_Type','application/json');
+        return $response;
+       // return $this->render('departement/edit.html.twig', ['form' =>
+            //$form->createView()]);
 
 
     }
@@ -168,37 +200,33 @@ class DepartementController extends AbstractController
         $entityManager->remove($departement);
         $entityManager->flush();
 
-        $response = new Response();
-        $response->send();
-        return $this->redirectToRoute('departement_list');
+        return new Response('Department removed ',Response::HTTP_CREATED);
     }
 
     /**
      * @Route("/reunion/newReu", name="new_reunion")
-     * Method({"GET", "POST"})
+     * Method({"POST"})
      */
-    public function newReunion(Request $request)
+    public function newReunion(Request $request , SerializerInterface $serializer)
     {
-        $reunion = new Reunion();
-        $form = $this->createForm(Reunion1Type::class, $reunion);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $reunion = $form->getData();
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($reunion);
-            $entityManager->flush();
-            return $this->redirectToRoute('reunion_list');
-        }
-        return $this->render('departement/newReu.html.twig', ['form' => $form->createView()]);
+        $content = $request->getContent();
+        $data = $serializer->deserialize($content,Reunion::class,'json');
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($data);
+        $em->flush();
+
+        return new Response('Reunion added ',Response::HTTP_CREATED);
+
+        //return $this->render('departement/newReu.html.twig', ['form' => $form->createView()]);
     }
 
     /**
      * @Route("/reunion/edit/{id}", name="edit_reunion")
      * Method({"GET", "POST"})
      */
-    public function editReu(Request $request, $id)
+    public function editReu(Request $request, SerializerInterface $serializer,Reunion $reunion)
     {
-        $reunion = new Reunion();
+      /*  $reunion = new Reunion();
         $reunion = $this->getDoctrine()->getRepository(Reunion::class)->find($id);
 
         $form = $this->createForm(Reunion1Type::class, $reunion);
@@ -210,11 +238,22 @@ class DepartementController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('reunion_list');
-        }
+        }*/
+        $data=$serializer->serialize($reunion,'json', ['groups'=>'Reunions']);
 
-        return $this->render('departement/editReu.html.twig', ['form' =>
-            $form->createView()]);
+        $response =new Response($data);
 
+      //  return $this->render('departement/editReu.html.twig', ['form' =>
+            //$form->createView()]);
+       /* $content = $request->getContent();
+        $data = $serializer->deserialize($content,Reunion::class,'json');
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($data);
+        $em->flush();*/
+        $response->headers->set('Content_Type','application/json');
+        return $response;
+
+        //return new Response('Reunion added ',Response::HTTP_CREATED);
 
     }
 
@@ -229,47 +268,52 @@ class DepartementController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($reunion);
         $entityManager->flush();
+        return new Response('Reunion removed ',Response::HTTP_CREATED);
 
-        $response = new Response();
-        $response->send();
-        return $this->redirectToRoute('reunion_list');
+       // $response = new Response();
+        //$response->send();
+       // return $this->redirectToRoute('reunion_list');
     }
 
     /**
      * @Route("/reunion/{id}" , name="list_ensreu")
+     * @Method ({"GET"})
      */
-    public function showense($id): Response
+    public function showense(Reunion $reunion , SerializerInterface $serializer)
     {
-        $reunion = $this->getDoctrine()
-            ->getRepository(Reunion::class)
-            ->find($id);
+
 
         $users = $reunion->getUsers();
-        return $this->render('departement/show.html.twig', ['enseignants' => $users, 'reunion' => $reunion]);
 
 
+
+        $data=$serializer->serialize($users,'json',['groups'=>'Reunions']);
+
+        $response =new Response($data);
+        $response->headers->set('Content_Type','application/json');
+        return $response;
     }
 
     /**
      * @Route("/departement/{id}" , name="list_ens")
+     * @Method ({"GET"})
      */
-    public function showE($id)
+    public function showE(Departement $departement,SerializerInterface $serializer)
     {
-        $departement = $this->getDoctrine()->getRepository((Departement::class))->find($id);
-        //  $ens=$this->getDoctrine()->getRepository((Enseignant::class))->findBy($departement);
+        $data=$serializer->serialize($departement,'json',['groups'=>'Departments']);
 
-        //  return $this->render('departement/liste.html.twig',['ens'=>$ens]);
-        return $this->render('departement/liste.html.twig', ['departement' => $departement]);
+        $response =new Response($data);
+        $response->headers->set('Content_Type','application/json');
+        return $response;
+        //return $this->render('departement/liste.html.twig', ['departement' => $departement]);
     }
 
     /**
      * @Route("/EnsToAffect/{id}" , name="EnsToAffect")
      */
-    public function EnsToAffect($id)
+    public function EnsToAffect(Reunion $reunion, SerializerInterface $serializer)
     {
-        $reunion = $this->getDoctrine()
-            ->getRepository(Reunion::class)
-            ->find($id);
+        ;
 
         $users = $reunion->getDepartement()->getUsers();
         $userss = [];
@@ -278,22 +322,22 @@ class DepartementController extends AbstractController
                 $userss[] = $user;
             }
         }
-        //echo( $enseignants);
-        return $this->render('departement/affectEns.html.twig', ['enseignants' => $userss, 'idR' => $id]);
+        $data=$serializer->serialize($userss,'json',['groups'=>'Reunions']);
+        $response =new Response($data);
+        $response->headers->set('Content_Type','application/json');
+        return $response;
+
+
+        //return $this->render('departement/affectEns.html.twig', ['enseignants' => $userss, 'idR' => $id]);
     }
 
     /**
      * @Route("/affectEns/{id}/{idR}" , name="affectEns")
+     * @Method ({"GET"})
      */
-    public function affectEns($id, $idR,\Swift_Mailer $mailer)
+    public function affectEns(User $user,Reunion $reunion, $idR,\Swift_Mailer $mailer ,SerializerInterface $serializer)
     {
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->find($id);
 
-        $reunion = $this->getDoctrine()
-            ->getRepository(Reunion::class)
-            ->find($idR);
         $users = $reunion->getDepartement()->getUsers();
         $dest=$user->getEmail();
 
@@ -313,14 +357,18 @@ class DepartementController extends AbstractController
                     Veuillez vous visionner votre liste des reunions ou vous trouverez les details ');
 
                 $mailer->send($message);
-                $response = new Response();
-                $response->send();
+
 
 
             }
         }
+        $data=$serializer->serialize($userss,'json',['groups'=>'Reunions']);
+        $response =new Response($data);
+        $response->headers->set('Content_Type','application/json');
+        return $response;
 
-        return $this->render('departement/affectEns.html.twig', ['enseignants' => $userss, 'idR' => $id]);
+
+       // return $this->render('departement/affectEns.html.twig', ['enseignants' => $userss, 'idR' => $id]);
 
     }
     /**
@@ -334,15 +382,15 @@ class DepartementController extends AbstractController
         $reunion->removeUser($user);
         $em=$this->getDoctrine()->getManager();
         $em->flush();
-        return $this->render('departement/show.html.twig', ['reunion' => $reunion ,'enseignant' => $user, 'idR' => $id]);
+       // return $this->render('departement/show.html.twig', ['reunion' => $reunion ,'enseignant' => $user, 'idR' => $id]);
     }
     /**
      * @Route("/affiche/{id}" , name="affichereu")
+     * @Method ({"GET"})
      */
-    public function affiche($id)
+    public function affiche(User $user, SerializerInterface $serializer)
     {
 
-        $user = $this->getDoctrine()->getRepository(User::class)->find($id);
         $reunions=$user->getReunions();
         $rdvs=[];
         foreach ($reunions as $event)
@@ -355,29 +403,13 @@ class DepartementController extends AbstractController
             ];
         }
         $data= json_encode($rdvs);
-        $em = $this->getDoctrine()->getManager();
-        $em->flush();
-        return $this->render('departement/listeREu.html.twig', ['reunions' => $reunions,'data'=>$data]);
-    }
-    /**
-     * @Route("/aa" , name="aa")
-     */
-    public function aa( ReunionRepository $reunion)
-    {
-        $events =$reunion->findAll();
-        $rdvs=[];
-        foreach ($events as $event)
-        {
-            $rdvs[]=[
-                'id' => $event->getId(),
-                'start' => $event->getStart()->format('Y-m-d H:i:s'),
-                'end' => $event->getEnd()->format('Y-m-d H:i:s'),
-                'title' => $event->getNom()
-            ];
-        }
-        $data= json_encode($rdvs);
+        $data1=$serializer->serialize($reunions,'json', ['groups'=>'Reunion']);
+        $response =new Response($data1);
+        $response->headers->set('Content_Type','application/json');
+        return $response;
 
-        return $this->render('frontOffice.html.twig' , compact('data'));
+        //return $this->render('departement/listeREu.html.twig', ['reunions' => $reunions,'data'=>$data]);
     }
+
 }
 
