@@ -12,6 +12,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class MatiereController
@@ -102,6 +107,35 @@ class MatiereController extends Controller
 
 
         return $this->redirectToRoute('matiere_list_matiere');
+    }
+    /**
+     * @Route("/showmatieremobile", name="showmatieremobile")
+     */
+    public function showmatieremobile(NormalizerInterface $normalizer)
+
+    {
+        $matiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
+        $jsonContent=$normalizer->normalize($matiere,'json',['groups'=>'matiere']);
+
+
+        return new Response(json_encode($jsonContent));
+
+
+    }
+    /**
+     * @Route ("/supprimermobile/{id}" , name="supprimermobile")
+     */
+    public function Supprimermobile(Request $request,NormalizerInterface $normalizer,$id)
+    {
+        $event= $this->getDoctrine()->getRepository(Matiere::class)->find($id);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($event);
+        $em->flush();
+        $jsonContent=$normalizer->normalize($event,'json',['groups'=>'matiere']);
+
+
+        return new Response("matrieredeleted succesfully".json_encode($jsonContent));
+
     }
 
 }
