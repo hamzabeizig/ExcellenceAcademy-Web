@@ -84,18 +84,6 @@ class Evenement
      * @ORM\JoinColumn(nullable=false)
      */
     private $categorie;
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="events")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
-
-
-
-
-
-
-
 
 
 
@@ -182,16 +170,6 @@ class Evenement
     public function setCategorie(?Categorie $categorie): self
     {
         $this->categorie = $categorie;
-
-        return $this;
-    }public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }

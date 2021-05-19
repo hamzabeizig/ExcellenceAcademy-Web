@@ -1,0 +1,6 @@
+{% extends 'frontOffice.html.twig' %}
+ {% block title %}Modifier Note{% endblock %}
+
+{% block body  %} <div style="padding-top: 50px;padding-bottom: 50px" class="container">{{ form_start(form) }} {{ form_widget(form) }}
+    <button type="submit" class="btn btn-success">Modifier</button>
+    {{ form_end(form) }} </div>{% endblock %}

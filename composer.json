@@ -31,7 +31,6 @@
         "symfony/property-access": "4.4.*",
         "symfony/property-info": "4.4.*",
         "symfony/proxy-manager-bridge": "4.4.*",
-        "symfony/routing": "4.4.*",
         "symfony/security-bundle": "4.4.*",
         "symfony/serializer": "4.4.*",
         "symfony/swiftmailer-bundle": "^3.5",

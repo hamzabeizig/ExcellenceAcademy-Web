@@ -12,6 +12,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -37,6 +38,8 @@ class User
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Groups ("Departments")
+     *  @Groups ("Reunions")
      */
     private $user_name;
 
@@ -82,12 +85,6 @@ class User
      * @ORM\OneToMany(targetEntity="App\Entity\Evenement", mappedBy="user")
      */
     private $events;
-
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Note", mappedBy="user")
-     */
-    private $notes;
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Reunion", mappedBy="users")
      */
@@ -97,10 +94,11 @@ class User
      * @ORM\JoinColumn(nullable=false)
      */
     private $departement;
+
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="Assiduite")
+     * @ORM\OneToMany(targetEntity="App\Entity\Note", mappedBy="user")
      */
-    private $assiduite;
+    private $notes;
 
     public function getId(): ?int
     {
@@ -149,7 +147,6 @@ class User
         $this->cours=new ArrayCollection();
         $this->demconvs=new ArrayCollection();
         $this->notes=new ArrayCollection();
-        $this->reunions =new ArrayCollection();
     }
     public function getEmail(): ?string
     {
@@ -324,6 +321,7 @@ class User
             }
         }
     }
+
     /**
      * @return Collection|Reunion[]
      */
@@ -357,4 +355,10 @@ class User
         $this->departement = $departement;
         return $this;
     }
+
+    public function getPrenomNom(): ?string
+    {
+        return $this->nom." ".$this->prenom;
+    }
+
 }
