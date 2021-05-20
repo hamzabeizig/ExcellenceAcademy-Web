@@ -3,7 +3,10 @@ namespace App\Controller;
 use App\Entity\Departement;
 use App\Entity\FindProperty;
 use App\Entity\User;
+use CalendarBundle\Serializer\Serializer;
+use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\Curl\Util;
+use phpDocumentor\Reflection\Types\Null_;
 use Psr\Container\ContainerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints\Length;
@@ -27,6 +31,11 @@ use App\Form\FindFormType;
 use \Symfony\Bundle\MonologBundle\SwiftMailer;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
+
+use Symfony\Component\Serializer\Normalizer;
 
 
 class UserController extends AbstractController
@@ -308,5 +317,34 @@ class UserController extends AbstractController
         ]);
         return $this->redirectToRoute('User_list');
     }
+    /**
+     * @Route("/User/news",name="add")
+     */
+    public function ajouterJs(Request $request,NormalizerInterface $normalizer)
+    {
+        $em=$this->getDoctrine()->getManager();
+        $User=new User();
+
+        $User->setPrenom($request->get('prenom'));
+        $User->setNom($request->get('nom'));
+        $User->setEmail($request->get('mail'));
+        $User->setDateDeNaissance(1970-05-05);
+
+
+        $User->setMdp($request->get('mdp'));
+        $User->setUserName($request->get('username'));
+        $User->setRole($request->get('role'));
+
+        $em->persist($User);
+        $em->flush();
+
+        $jsonContent=$normalizer->normalize($User,'json',['groups'=>'post:read']);
+
+
+        return new Response(json_encode($jsonContent));
+    }
+
+
+
 
 }
