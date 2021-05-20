@@ -7,6 +7,12 @@ parameters:
     brochures_directory: '%kernel.project_dir%/public/uploads/brochures'
 
 services:
+    object_normalizer:
+        class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
+        # Important! Tag this service or it wouldn't work
+        tags:
+            - { name: serializer.normalizer }
+
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.

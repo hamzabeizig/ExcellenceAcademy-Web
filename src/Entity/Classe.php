@@ -6,6 +6,7 @@ use App\Repository\ClasseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ClasseRepository::class)
@@ -16,39 +17,48 @@ class Classe
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("note")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      */
     private $nom_classe;
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Cour", mappedBy="classe")
+     *
      */
     private $cours;
 
     /**
      * @ORM\Column(type="integer" )
+     *
      */
     private $id_emp;
 
     /**
      * @ORM\Column(type="integer")
+     *
      */
     private $nbr_etudiant;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      */
     private $nom_salle;
     /**
      * @ORM\OneToMany(targetEntity=Note::class, mappedBy="classe")
+     *
+     *
      */
     private $notes;
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="classe")
+     *
      */
     private $user;
 

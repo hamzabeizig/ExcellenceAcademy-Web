@@ -12,6 +12,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -22,26 +23,32 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("note")
+     *
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Groups("np")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Groups("np")
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=30)
+     *
      */
     private $user_name;
 
     /**
      * @ORM\Column(type="string", length=30)
+     *
      */
     private $email;
 

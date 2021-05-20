@@ -19,6 +19,20 @@ class MatiereRepository extends ServiceEntityRepository
         parent::__construct($registry, Matiere::class);
     }
 
+
+    public function OrderForMatiere(int $id){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT p
+            FROM App\Entity\Matiere p
+            WHERE p.id = :id
+            ORDER BY p.id ASC'
+        )->setParameter('id', $id);
+
+        // returns an array of Product objects
+        return $query->getResult();
+    }
+
     // /**
     //  * @return Matiere[] Returns an array of Matiere objects
     //  */

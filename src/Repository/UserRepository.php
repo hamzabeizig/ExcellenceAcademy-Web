@@ -32,6 +32,19 @@ class UserRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function getAlls(String $id){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT p
+            FROM App\Entity\User p
+            WHERE p.role = :id
+            '
+        )->setParameter('id', $id);
+
+        // returns an array of Product objects
+        return $query->getResult();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
