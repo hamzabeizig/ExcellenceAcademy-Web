@@ -3,7 +3,7 @@
 
 namespace App\Controller;
 
-use Symfony\Component\Serializer\Serializer;
+
 use App\Entity\Assiduite;
 use App\Entity\Matiere;
 use App\Form\AssiduiteType;
@@ -12,12 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\Serializer\Normalizer;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 
 /**
  * Class MatiereController
@@ -40,9 +34,6 @@ class MatiereController extends Controller
             'matiere' => $matiere,
         ]);
     }
-
-
-
     /**
      * @Route("/addmatiere",name="add_matiere", methods={"GET","POST"})
      * @param Request $request

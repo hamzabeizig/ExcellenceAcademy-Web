@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use App\Repository\EvenementRepository;
 use Doctrine\ORM\Mapping as ORM;
+use  Symfony\Component\Serializer\Annotation\Groups ;
 
 /**
  * @ORM\Entity(repositoryClass=EvenementRepository::class)
@@ -17,6 +18,7 @@ class Evenement
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("event")
      */
     public $id_evenement;
 
@@ -28,6 +30,7 @@ class Evenement
      *     match=false,
      *     message="le nom de l'evènement ne peut pas contenir un numéro"
      * )
+     * @Groups("event")
      */
     public $nom_evenement;
 
@@ -36,6 +39,7 @@ class Evenement
      * @var string A "Y-m-d" formatted value
      * @Assert\GreaterThan("today")
      * @ORM\Column(name="date_evenement", type="datetime")
+     * @Groups("event")
      */
     public $date_evenement;
 
@@ -46,6 +50,7 @@ class Evenement
      *     match=false,
      *     message="le responsable ne peut pas etre un numéro"
      * )
+     * @Groups("event")
      */
     public $responsable;
 
@@ -56,16 +61,19 @@ class Evenement
      *     match=false,
      *     message="la description  ne peut pas contenir des numéros"
      * )
+     * @Groups("event")
      */
     public $description;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Groups("event")
      */
     public $etat;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("event")
      */
     private $id_user;
 
@@ -76,12 +84,14 @@ class Evenement
      * message="The value  is notvalid."
      * )
      * @var  integer
+     * @Groups("event")
      */
     public $nbr_place;
 
     /**
      * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="Events")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("event")
      */
     private $categorie;
 

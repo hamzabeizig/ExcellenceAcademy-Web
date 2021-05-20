@@ -10,11 +10,17 @@ use App\Form\EvenementFormType;
 use App\Form\PropertySearchTypew;
 use App\Repository\DemConventionRepository;
 use App\Repository\EvenementRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 
 class EvenementsController extends AbstractController
 {
@@ -26,6 +32,23 @@ class EvenementsController extends AbstractController
         return $this->render('evenement/index.html.twig', [
             'controller_name' => 'EvenementController',
         ]);
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @route("/Affichemobile",name="Affichemobile")
+     */
+    public function AfficheEventMobile(NormalizerInterface $normalizer){
+
+
+        $events= $this->getDoctrine()->getRepository(Evenement::class)->findAll();
+        $json=$normalizer->normalize($events,"json",["groups"=>"event"]) ;
+
+        return new Response(json_encode($json));
+
+
+        //return  $this->render('evenement/affiche.html.twig',[ 'form' =>$form->createView(), 'evenement' => $articles]);
+
     }
 
     /**
@@ -57,6 +80,44 @@ class EvenementsController extends AbstractController
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
+     * @route("evenement/AddMobile", name="orgmob")
+     */
+
+    function AddMobile(Request $request,SerializerInterface $serializer, EntityManagerInterface $em,NormalizerInterface $normalizer){
+
+     $e = new Evenement();
+     $description=$request->get("desc");
+     $nbp=$request->get("nbp");
+     $nome=$request->get("nome");
+     $date=new \DateTime();
+     $resp=$request->get("resp");
+
+     $e->setNomEvenement($nome);
+     $e->setNbrPlace($nbp);
+     $e->setResponsable($resp);
+     $e->setDescription($description);
+     $e->setIdUser(2);
+
+     $e->setDateEvenement($date);
+     $em->persist($e);
+     $em->flush();
+     $jsonContent=$normalizer->normalize($e,'json',['groups'=>'events']);
+
+     return new Response(json_encode($jsonContent));
+
+
+
+
+
+
+    }
+
+
+
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      * @route("evenement/Add/{id_et}", name="org")
      */
 
@@ -83,6 +144,19 @@ class EvenementsController extends AbstractController
 
 
     }
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @route("/Deletemobile/{id_evenement}",name="dm")
+     */
+
+    public function deletemobile($id_evenement,EvenementRepository $repository){
+        $evenement=$repository->find($id_evenement);
+        $em = $this->getDoctrine()->getManager() ;
+        $em -> remove($evenement);
+        $em -> flush();
+        return  new Response("evenement supprimé");
+
+    }
 
     /**
      * @return \Symfony\Component\HttpFoundation\Response
@@ -96,6 +170,24 @@ class EvenementsController extends AbstractController
         $em -> flush();
         return $this->redirectToRoute("Affiche");
         $this->addFlash('success', 'evenement supprimé');
+
+    }
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @route("evenement/updatemobile/{id_evenement}" , name="updatemobile")
+     */
+
+    public function updatemobile(EvenementRepository $repository,$id_evenement,Request $request,SerializerInterface $serializer,EntityManagerInterface $em){
+        $evenement=$repository->find($id_evenement);
+        $content=$request->get("nom_evenement");
+        dump($content);
+        $data=$serializer->deserialize($content,Evenement::class,'json');
+        $evenement->setNomEvenement($content);
+        $em->persist($data);
+        $em->flush();
+    return  new Response("evenement modifié");
+
+
 
     }
 
