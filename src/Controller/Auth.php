@@ -64,9 +64,7 @@ class Auth extends AbstractController
         return $this->render('user/auth.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
-     * @Route("/loginFK", name="loginFK")
-     */
+    
     /**
      * @Route("/loginFK", name="loginFK")
      */
