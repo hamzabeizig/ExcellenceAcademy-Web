@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -22,16 +23,19 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("note")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Groups("np")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Groups("np")
      */
     private $prenom;
 
