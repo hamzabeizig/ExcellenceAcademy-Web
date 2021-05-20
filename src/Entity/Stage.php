@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use  Symfony\Component\Serializer\Annotation\Groups ;
+
 
 
 /**
@@ -18,23 +20,27 @@ class Stage
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("stage")
      */
     private $id;
 
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Groups("stage")
      */
     public $Email_Societe;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Groups("stage")
      */
     public $pays;
 
     /**
      * @Assert\DateTime
      * @ORM\Column(name="date_debut", type="datetime")
+     * @Groups("stage")
      */
     public $date_debut;
 
@@ -42,23 +48,27 @@ class Stage
      * @Assert\DateTime
      * @Assert\GreaterThan(propertyPath="date_debut")
      * @ORM\Column(name="date_fin", type="datetime")
+     * @Groups("stage")
      */
     public $date_fin;
 
     /**
 
      * @ORM\Column(type="string", length=30)
+     * @Groups("stage")
      */
     public $type_stage;
 
     /**
      * @ORM\OneToMany(targetEntity=SocieteP::class, mappedBy="stages")
+     *
      */
     private $societePs;
 
     /**
      * @ORM\ManyToOne(targetEntity=SocieteP::class, inversedBy="stages")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("stage")
      */
     private $Societe;
 

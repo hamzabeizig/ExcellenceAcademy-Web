@@ -6,7 +6,7 @@ use App\Repository\MatiereRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,12 +18,14 @@ class Matiere
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *  @Groups("matiere")
      */
     private $id;
     /**
      * @var string
      * @ORM\Column(name="nom_matiere", type="string", nullable=false, length=255)
      * @Assert\NotBlank(message=" le champs coefficient est obligatoire!")
+     * @Groups("matiere")
      */
     private $nom_matiere;
 
@@ -32,6 +34,7 @@ class Matiere
      *
      * @ORM\Column(name="coefficient", type="integer", nullable=false)
      * @Assert\NotBlank(message=" le champs coefficient est obligatoire!")
+     * @Groups("matiere")
      */
     private $coefficient;
 
@@ -40,15 +43,18 @@ class Matiere
      *
      * @ORM\Column(name="volume_h", type="integer", nullable=false)
      * @Assert\NotBlank(message=" le champs volume est obligatoire!")
+     * @Groups("matiere")
      */
     private $volume_h;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Cour", mappedBy="matiere")
+     *
      */
     private $cours;
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Matiere", mappedBy="matiere")
+     *
      */
     private $notes;
     /**

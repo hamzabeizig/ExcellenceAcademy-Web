@@ -25,6 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Serializer\SerializerInterface;
 
 
+
 class DepartementController extends AbstractController
 {
 
@@ -89,14 +90,15 @@ class DepartementController extends AbstractController
                 $departements = $this->getDoctrine()->getRepository(Departement::class)->findAll();
 
                 $data = $serializer->serialize($departements, 'json',['groups'=>'Departments']);
+                dump($departements);
                 $response = new Response($data);
             }
 
-
+            return $response;
         }
-        $response->headers->set('Content_Type','application/json');
-        return $response;
-       // return $this->render('departement/index.html.twig', ['form' => $form->createView(), 'departements' => $departements]);
+
+
+        return $this->render('departement/index.html.twig', ['form' => $form->createView(), 'departements' => $departements]);
     }
 
 

@@ -17,7 +17,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use \Symfony\Bundle\MonologBundle\SwiftMailer;
-
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse ;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 
 
@@ -34,8 +37,6 @@ class StageController extends AbstractController
             'controller_name' => 'StageController',
         ]);
     }
-
-
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      * @route("/stagea",name="AfficheStage")
@@ -43,8 +44,25 @@ class StageController extends AbstractController
     public function Affiche(){
         $repo=$this->getDoctrine()->getRepository(Stage::class) ;
         $stage=$repo->findAll();
-
         return $this->render('stage/affichestage.html.twig',['stage'=>$stage]);
+
+
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @route("/stageamobile",name="AfficheStageMobile")
+     */
+    public function AfficheMobile(NormalizerInterface $normalizer){
+        $repo=$this->getDoctrine()->getRepository(Stage::class) ;
+        $stage=$repo->findAll();
+        $jsonContent=$normalizer->normalize($stage,'json',['groups'=>'stage']);
+
+
+        return new Response(json_encode($jsonContent));
+
+        //return $this->render('stage/affichestage.html.twig',['stage'=>json_encode($stage)]);
+
 
     }
 
@@ -122,7 +140,32 @@ class StageController extends AbstractController
 
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @route("stage/conventionmobile" , name="demanderCmobile")
+     */
 
+    function DemanderCmobile (Request $request)
+    {
+
+        $DemandeC = new DemConvention();
+        $id=$request->get("id");
+        $DemandeC->setIdUser(2);
+        $DemandeC->setIdStage($id);
+        $DemandeC->setUserName("khalil98");
+        $DemandeC->setEtat("en attente");
+        $DemandeC->setDate(new \DateTime('now'));
+        $DemandeC->setEmail("khalilguedria000@gmail.com");
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($DemandeC);
+        $em->flush();
+
+        return new Response("demande envoyée");
+
+
+    }
 
     /**
      * @param Request $request
@@ -212,7 +255,38 @@ class StageController extends AbstractController
 
     }
 
+
     /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @route("stage/postuler" , name="posm")
+     */
+
+    function Postulermobile(\Swift_Mailer $mailer){
+
+
+            $message = (new \Swift_Message('Postulation'))
+                ->setFrom('excellenceacademy878@gmail.com')
+                ->setTo('hamza.beizig@esprit.tn')
+                ->setBody('nouvelle postulation')
+                ->attach(\Swift_Attachment::fromPath('C:\xampp\htdocs\code-Army2\public\fichiers\CV_Mohamed-Khalil Guedria.pdf'))
+                ->attach(\Swift_Attachment::fromPath('C:\xampp\htdocs\code-Army2\public\fichiers\Lettre De Motivation_Mohamed-Khalil Guedria.pdf'))
+
+
+
+            ;
+            $mailer->send($message);
+            $this->addFlash('success', 'votre demande a été bien envoyée');
+             return new Response("demande envoyée");
+
+
+
+
+}
+
+
+
+/**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @route("stage/postuler/{id_stage}" , name="pos")
