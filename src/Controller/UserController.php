@@ -328,7 +328,7 @@ class UserController extends AbstractController
         $User->setPrenom($request->get('prenom'));
         $User->setNom($request->get('nom'));
         $User->setEmail($request->get('mail'));
-        $User->setDateDeNaissance(1970-05-05);
+       // $User->setDateDeNaissance(1970-05-05);
 
 
         $User->setMdp($request->get('mdp'));
