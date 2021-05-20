@@ -8,10 +8,10 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900" rel="stylesheet">
 
     <title>Excellence academy</title>
-
+    <!-- encore_entry_link_tags('app') -->
 {% block stylesheet %}
-    {{ encore_entry_link_tags('app') }}
-    {% endblock %}
+
+{% endblock %}
     <!-- Bootstrap core CSS -->
     <link href="{{asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('fullCalendar/main.css') }}" />
@@ -28,7 +28,7 @@
         }
     </style>
     {% block javascript %}
-    {{ encore_entry_script_tags('app') }}.
+  <!--encore_entry_script_tags('app')-->
 
     {% endblock %}
 </head>

@@ -23,16 +23,19 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("post:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Groups("post:read")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Groups("post:read")
      */
     private $prenom;
 
@@ -40,16 +43,19 @@ class User
      * @ORM\Column(type="string", length=30)
      * @Groups ("Departments")
      *  @Groups ("Reunions")
+     * @Groups("post:read")
      */
     private $user_name;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Groups("post:read")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups("post:read")
      * @Assert\Length(
      * min = 8,
      * max = 20,
@@ -61,15 +67,18 @@ class User
 
     /**
      * @ORM\Column(type="date")
+     * @Groups("post:read")
      */
     private $date_de_naissance;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups("post:read")
      */
     private $role;
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Assiduite", mappedBy="user")
+     * @Groups("post:read")
      */
     private $Assiduites;
 
