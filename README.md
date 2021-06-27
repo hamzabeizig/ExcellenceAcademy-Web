@@ -1,8 +1,6 @@
 # ExcellenceAcademy-Web
 ExcellenceAcademy-Web
 
-# ExcellenceAcademy-Desktop
-This is Excellence Academy Desktop Application 
 
 
 ##############################################################################
